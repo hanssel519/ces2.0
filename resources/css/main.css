@@ -1,0 +1,10 @@
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
+.btn-green{
+  background-color: #00b34c;
+  color: rgb(255, 255, 255);
+}
