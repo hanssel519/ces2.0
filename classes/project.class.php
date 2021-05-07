@@ -16,6 +16,7 @@ class Project extends Dbh
         $sql = "INSERT INTO `cases` (`name`) VALUES ('" . $projectName."');";
         $stmt = $this->connect('ces_central')->query($sql);
     }
+    //在front page列出所有project
     public function showAllProjects($value=''){
         $sql = "SELECT `name` FROM `cases`";
         $stmt = $this->connect('ces_central')->query($sql);

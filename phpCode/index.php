@@ -80,8 +80,9 @@
         $list = $project->showAllProjects();
         foreach ($list as $key => $value) {
             foreach ($value as $key => $name) {
+                $url = "projects/individualMainPage.php?projectName=".urlencode($name);
                 ?>
-                <a href="projects/individualMainPage.php?projectName=<?php echo $name; ?>" class="list-group-item list-group-item-action list-group-item-light"><?php echo $name ?></a>
+                <a href=<?php echo $url; ?> class="list-group-item list-group-item-action list-group-item-light"><?php echo $name ?></a>
                 <?php
             }
         }
@@ -107,7 +108,7 @@
         <div class="col">
           <h2>One of three columns</h2>
           <?php
-          $users = new Users();
+          $users = new Users($_SERVER['PHP_AUTH_USER']);
           $users->showAllUsers();
           echo "<hr>";
           ?>

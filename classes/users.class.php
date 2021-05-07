@@ -10,7 +10,11 @@ class Users extends Dbh
     private $dbName = 'users';
     function __construct($auth_name){
         $this->auth_name = $auth_name;
-        $this->name = substr($auth_name, strrpos($auth_name, '\\') + 1);
+        if (!strrpos($this->auth_name, '\\')) {
+            $this->name = $this->auth_name;
+        }else {
+            $this->name = substr($auth_name, strrpos($auth_name, '\\') + 1);
+        }
     }
     public function showAllUsers(){
         if(!$this->connect($this->dbName)){
@@ -25,6 +29,10 @@ class Users extends Dbh
 
     }
     public function getUserName(){
+        if (!strrpos($this->auth_name, '\\')) {
+            $this->name = $this->auth_name;
+            return $this->name;
+        }
         $this->name = substr($this->auth_name, strrpos($this->auth_name, '\\') + 1) ;
         return $this->name;
     }

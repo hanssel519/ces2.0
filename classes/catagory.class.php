@@ -21,7 +21,7 @@ class catagory extends Dbh
         //$data = $this->connect()->query($sql)->fetchAll();
         $data = $this->connect($_COOKIE['projectName'])->query($sql)->fetchAll();
         //忘記選資料庫
-$output[] = array();
+        $output[] = array();
         foreach($data as $row){
             $output[] = array(
                 'name' => $row["name"],

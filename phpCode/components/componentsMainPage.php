@@ -25,7 +25,7 @@
 ?>
   <div class="container">
     <div class="wrapper m-md-2 p-md-5">
-      <h2 class="text-success">Project Name</h1>
+      <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName'];?></h1>
 
       <div class="container py-5" id="hanging-icons">
         <h2 class="pb-2 border-bottom">Leaf Components Page</h2>

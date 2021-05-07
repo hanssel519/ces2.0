@@ -21,6 +21,8 @@
 //從上一頁選擇過來的
 
 //setcookie('projectName', $_GET['projectName'], time() + 3600, "/");
+var_dump($_GET['projectName']);
+echo $_GET['projectName'];
 if (isset($_GET['projectName'])) {
     if(isset($_COOKIE['projectName'])) {
         unset($_COOKIE['projectName']);

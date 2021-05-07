@@ -18,9 +18,9 @@
       <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName']; ?></h1>
 
       <div class="container py-5" id="hanging-icons">
-        <h2 class="pb-2 border-bottom">Fill the Blanks</h2>
-
-        <form>
+        <h2 class="pb-2 border-bottom">Fill the Blanks (<?php echo $_COOKIE['material']; ?>)</h2>
+        <!--need to pass $_COOKIE['material']+$items-->
+        <form action="action/fillInputAction.php" method="POST">
             <?php
             if (!isset($_GET['selection'])) {
                 header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -30,22 +30,39 @@
             $minorElement = new MinorElement();
             $items = $minorElement->queryShow($_COOKIE['projectName'], $selections);
 
-            /*echo '<pre>'; print_r($items); echo '</pre>';
+            //echo '<pre>'; print_r($items); echo '</pre>';
+            /*
             $keys = array_keys($items);
             echo '<pre>'; print_r($keys); echo '</pre>';*/
             ?>
+            <div class="mb-4">
+            <h3><label for="component_name" class="form-label">component名稱</label></h3>
+            <input type="text" class="form-control" id="component_name" name = "component_name">
+            <h3><label for="layer" class="form-label">layer</label></h3>
+            <input type="text" class="form-control" id="layer" name = "layer">
+
+            </div>
 
           <?php foreach ($items as $item => $detail): ?>
           <div class="wrapper">
             <h3><?php echo $item; ?></h3>
             <?php foreach ($detail as $key => $value): ?>
               <div class="mb-4">
-                <label for="exampleInput" class="form-label"><?php ECHO $key." (".$value.")" ?></label>
-                <input type="text" class="form-control" id="exampleInput">
+                <label for=<?php echo $key; ?> class="form-label"><?php ECHO $key." (".$value.")" ?></label>
+                <input type="text" class="form-control" id=<?php echo $key; ?> name = <?php echo $key; ?>>
               </div>
             <?php endforeach; ?>
           </div>
           <?php endforeach; ?>
+
+          <div class="mb-4">
+          <h3><label for="remark" class="form-label">備註</label></h3>
+          <input type="text" class="form-control" id="remark" name = "remark">
+          </div>
+
+          <!--pass $items with hidden-->
+          <input type='hidden' name='items' value="<?php echo htmlentities(serialize($items)); ?>" />
+
 
 
 
@@ -56,6 +73,7 @@
 
 
           <?php
+          //return item template
             $items = array(
               '塑膠' => array(
                 '塑料名稱' => '單位',

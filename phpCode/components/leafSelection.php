@@ -15,10 +15,10 @@
 <!--body contents go here-->
 <?php
     if (isset($_GET['material'])) {
-    /*    if(isset($_COOKIE['material'])) {
+    if(isset($_COOKIE['material'])) {
             unset($_COOKIE['material']);
         }
-        setcookie('material', $_GET['material'], -1, "/");*/
+        setcookie('material', $_GET['material'], -1, "/");
 
     }else {//從下一頁 按上一頁return page的
         //do nothing to keep cookie
@@ -32,11 +32,13 @@
           <?php
             $user = new Users($_SERVER['PHP_AUTH_USER']);
             //$user->getUserName();
+            $department = $user->getUserName();
+            echo "depar: ".$department."<br>";
             $department = $user->getUsersDepartment();
             echo "depar: ".$department."<br>";
           ?>
       <div class="container py-5" id="hanging-icons">
-        <h2 class="pb-2 border-bottom">Select Attributes</h2>
+        <h2 class="pb-2 border-bottom">Select Attributes (<?php echo $_GET['material']; ?>)</h2>
 
         <?php
           $itemss = array(
