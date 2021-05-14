@@ -2,3 +2,7 @@
 	fill in components
 	show components
 	minorElement.class.php
+2021/05/14
+	add CEStable\phpCode\components\singleComponent
+	component check, copy, modify
+	edit CEStable\classes(components\minorElement)

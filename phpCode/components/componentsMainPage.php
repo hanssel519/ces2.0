@@ -23,6 +23,7 @@
     'XX',
   );
 ?>
+<?php print_r($_COOKIE); ?>
   <div class="container">
     <div class="wrapper m-md-2 p-md-5">
       <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName'];?></h1>

@@ -19,6 +19,36 @@
 
 
 <?php print_r($_COOKIE); ?>
+
+<!--modal for component copy-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Enter your component name</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <form id="copy_form" action="singleComponent/action/copy.php?projectName=<?php echo $_COOKIE['projectName']; ?>" method="POST">
+            <div class="modal-body">
+              ...
+              <p id="id_name"></p>
+              <?php echo "<br>project: ". $_COOKIE['projectName']; ?>
+                <div class="mb-3">
+                  <label for="inputName" class="form-label">component name</label>
+                  <input type="text" class="form-control" name="componentName" id="inputName">
+                </div>
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" name="saveNewProject" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+
+        </div>
+    </div>
+</div>
 <!--body contents go here-->
 <div class="container">
   <div class="wrapper m-md-2 pt-md-3">
@@ -35,6 +65,7 @@
     <div class="container py-4">
         <div class="container m-md-2 pt-md-3">
             <h4 class="pb-2 border-bottom">show components</h4>
+
             <div class="list-group list-group-flush">
                 <div class="list-group-item">
                     <div class="row align-items-center">
@@ -47,36 +78,58 @@
                         <div class="col">
                             submission_date
                         </div>
+                        <div class="col">
+                            Action
+                        </div>
                     </div>
                 </div>
-              <!--list all the components-->
-              <?php
-              $components = new Components();
-              $items = $components->showAllComponents($_COOKIE['projectName']);
-              //echo '<pre>'; print_r($items); echo '</pre>';
+                  <!--list all the components-->
+                  <?php
+                  $components = new Components();
+                  $items = $components->showAllComponents($_COOKIE['projectName']);
+                  //echo '<pre>'; print_r($items); echo '</pre>';
 
-              foreach ($items as $key => $value) {
-                  //foreach ($value as $column => $data) {
-                      //$url = "projects/individualMainPage.php?projectName=".urlencode();
+
+                  if (! $items) {//no components
                       ?>
-                  <a class="list-group-item list-group-item-action list-group-item-light">
-                      <div class="row align-items-center">
-                        <div class="col">
-                            <?php echo $value['name'] ?>
-                        </div>
-                        <div class="col">
-                            <?php echo $value['material'] ?>
-                        </div>
-                        <div class="col">
-                            <?php echo $value['submission_date'] ?>
+                      <p class="pt-5 text-center">尚無資料</p>
+                      <?php
+                  }
+                  foreach ($items as $key => $value) {
+                      //foreach ($value as $column => $data) {
+                          //$url = "projects/individualMainPage.php?projectName=".urlencode();
+                          ?>
+
+                      <div class="list-group-item list-group-item-action list-group-item-light">
+                          <div class="container">
+                          <div class="row align-items-center">
+                            <div class="col">
+                                <?php echo $value['name']. ",id: ".$value['id']?>
+                            </div>
+                            <div class="col">
+                                <?php echo $value['material'] ?>
+                            </div>
+                            <div class="col">
+                                <?php echo $value['submission_date'] ?>
+                            </div>
+                            <div class="col">
+                                <a type="button" href="singleComponent/singleComponentCheck.php?projectName=<?php echo $_COOKIE['projectName'];?>&componentID=<?php echo $value['id'];?>&componentName=<?php echo $value['name']; ?>&action=check" class="btn btn-secondary" name="button">查看</a>
+
+                                <a type="button" href="singleComponent/singleComponentModify.php?projectName=<?php echo $_COOKIE['projectName'];?>&componentID=<?php echo $value['id'];?>&componentName=<?php echo $value['name']; ?>&action=modify" class="btn btn-secondary" name="button">修改</a>
+
+                                <a type="button" href="singleComponent/singleComponentDelete.php?projectName=<?php echo $_COOKIE['projectName'];?>&componentID=<?php echo $value['id'];?>&componentName=<?php echo $value['name']; ?>&action=delete" class="btn btn-secondary" name="button">刪除</a>
+
+
+
+                                <a type="button" id="copy_btn" onclick="copy_onclick('<?php echo $value['id'];?>','<?php echo $value['name'];?>')" class="btn btn-secondary" name="button">複製</a>
+                            </div>
+                          </div>
                         </div>
                     </div>
-                </a>
-                      <?php
-                  //}
-              }
-              ?>
-
+                          <?php
+                      //}
+                  }
+                  ?>
             </div>
         </div>
     </div>
@@ -93,9 +146,15 @@
     <script src="/CEStable/library/jquery/jquery-3.6.0.js"></script>
 
     <script type="text/javascript">
-        document.getElementById("newProjectBtn").onclick = function () {
-            location.href = "projects/newProject.php";
-        };
+        function copy_onclick(component_id, component_name) {
+            document.getElementById('id_name').innerHTML = "name: "+component_name;
+            var formAction = $('#copy_form').attr('action');
+            var url = "&componentID="+component_id;
+            $('#copy_form').attr('action', formAction + url);
+            $('#exampleModal').modal('show');
+        }
+
+
     </script>
   </body>
 </html>

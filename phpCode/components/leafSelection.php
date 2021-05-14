@@ -25,7 +25,7 @@
         header("Location: /componentsMainPage.php");
     }
 ?>
-
+<?php print_r($_COOKIE); ?>
   <div class="container">
     <div class="wrapper m-md-2 p-md-5">
       <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName']; ?></h1>
@@ -52,7 +52,7 @@
               'Sheet_Metal' => array('鐵件'=>'me', '漆'=>'id', 'nut'=>'me', '銅柱'=>'me', '衝壓'=>'me', 'cnc'=>'me', 'ed'=>'id', '塗裝'=>'id', '加工'=>'id', '蝕刻'=>'id', '雷雕'=>'id', '印刷'=>'id'));
         ?>
 
-            <form action="fillInput.php">
+            <form action="fillInput.php" method="post">
             <?php
             foreach ($items[$_GET['material']] as $key => $value) {
                 if ($value==$department) {//get 'me' or 'id' part

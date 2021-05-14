@@ -9,7 +9,14 @@ require($_SERVER['DOCUMENT_ROOT']."/CEStable/includes/importLibraries.inc.php");
 foreach ($_POST as $key => $value) {
     echo "Field ".htmlspecialchars($key)." is ".htmlspecialchars($value)."<br>";
 }*/
+
+
+//delete($_POST['componentID']);
 $items = unserialize($_POST['items']);
+$_POST['items'] = unserialize($_POST['items']);
+
+echo '<pre>'; print_r($items); echo '</pre>';
+echo '<pre>'; print_r($_POST); echo '</pre>';
 /*echo "<hr>passed_array: ";
 echo '<pre>'; print_r($items); echo '</pre>';*/
 

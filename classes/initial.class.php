@@ -342,6 +342,8 @@ class Initial extends Dbh
               `material` varchar(50) DEFAULT NULL,
               `material_id` int(10),
               `layer` varchar(50),
+              `supplier` varchar(50),
+              `amount` varchar(20),
               `remark` TEXT DEFAULT NULL,
               `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";

@@ -34,6 +34,8 @@ if (isset($_GET['projectName'])) {
     header("Location: ../index.php");
 }
 ?>
+<?php print_r($_COOKIE); ?>
+
   <div class="container">
     <div class="wrapper m-md-2 p-md-5">
       <h2 class="text-success" >Project Name: <?php echo $_GET['projectName'];?></h1>
@@ -97,7 +99,7 @@ if (isset($_GET['projectName'])) {
             <div>
               <h3>check leaf components</h3>
               <p>檢查製作完的樹葉元件 .</p>
-              <a href="#" class="btn btn-dark">
+              <a href="../components/showComponents.php" class="btn btn-dark">
                 check leaf components
               </a>
             </div>

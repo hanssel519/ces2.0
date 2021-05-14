@@ -13,6 +13,7 @@
   require('../../includes/template/header.php');
 ?>
 <!--body contents go here-->
+<?php print_r($_COOKIE); ?>
   <div class="container">
     <div class="wrapper m-md-2 p-md-5">
       <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName']; ?></h1>
@@ -22,15 +23,15 @@
         <!--need to pass $_COOKIE['material']+$items-->
         <form action="action/fillInputAction.php" method="POST">
             <?php
-            if (!isset($_GET['selection'])) {
+            if (!isset($_POST['selection'])) {
                 header('Location: ' . $_SERVER['HTTP_REFERER']);
             }
-            $selections = $_GET['selection'];
+            $selections = $_POST['selection'];
             //$selections an array with all the selection from previous page
             $minorElement = new MinorElement();
             $items = $minorElement->queryShow($_COOKIE['projectName'], $selections);
 
-            //echo '<pre>'; print_r($items); echo '</pre>';
+            echo '<pre>'; print_r($items); echo '</pre>';
             /*
             $keys = array_keys($items);
             echo '<pre>'; print_r($keys); echo '</pre>';*/
@@ -40,17 +41,23 @@
             <input type="text" class="form-control" id="component_name" name = "component_name">
             <h3><label for="layer" class="form-label">layer</label></h3>
             <input type="text" class="form-control" id="layer" name = "layer">
-
+            <h3><label for="supplier" class="form-label">供應商</label></h3>
+            <input type="text" class="form-control" id="supplier" name = "supplier">
+            <h3><label for="amount" class="form-label">數量</label></h3>
+            <input type="text" class="form-control" id="amount" name = "amount">
             </div>
 
           <?php foreach ($items as $item => $detail): ?>
           <div class="wrapper">
             <h3><?php echo $item; ?></h3>
             <?php foreach ($detail as $key => $value): ?>
-              <div class="mb-4">
-                <label for=<?php echo $key; ?> class="form-label"><?php ECHO $key." (".$value.")" ?></label>
-                <input type="text" class="form-control" id=<?php echo $key; ?> name = <?php echo $key; ?>>
-              </div>
+                <?php if (strcmp($key, 'submission_date')): ?>
+                    <div class="mb-4">
+                      <label for=<?php echo $key; ?> class="form-label"><?php ECHO $key.$value ?></label>
+                      <input type="text" class="form-control" id=<?php echo $key; ?> name = <?php echo $key; ?>>
+                    </div>
+                <?php endif; ?>
+
             <?php endforeach; ?>
           </div>
           <?php endforeach; ?>
