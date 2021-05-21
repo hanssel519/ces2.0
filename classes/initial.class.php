@@ -301,8 +301,33 @@ class Initial extends Dbh
                     $str .
                     ",submission_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP".
                     ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4; ";
+
                 $stmt = $this->connect($dbName)->query($sql);
             }
+            //壓合, 熱熔 id對應
+            $sql =" CREATE TABLE `熱熔子件id` (
+              `id` int(10) NOT NULL PRIMARY KEY auto_increment,
+              `tables` varchar(50) DEFAULT NULL,
+              `熱熔id` int(10) DEFAULT NULL,
+              `子件id` int(10) DEFAULT NULL,
+              `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              FOREIGN KEY (`熱熔id`) REFERENCES `熱熔` (id)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+            echo "<hr>".$sql;
+            $stmt = $this->connect($dbName)->query($sql);
+
+            $sql =" CREATE TABLE `壓合子件id` (
+              `id` int(10) NOT NULL PRIMARY KEY auto_increment,
+              `tables` varchar(50) DEFAULT NULL,
+              `壓合id` int(10) DEFAULT NULL,
+              `子件id` int(10) DEFAULT NULL,
+              `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              FOREIGN KEY (`壓合id`) REFERENCES `壓合` (id)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+            echo "<hr>".$sql;
+            $stmt = $this->connect($dbName)->query($sql);
+
+
             //開大表單(worksheet = table name)
             foreach ($this->big as $key => $value){
                 $str = "";
@@ -318,6 +343,7 @@ class Initial extends Dbh
                     "PRIMARY KEY ( id )".
                     $str1 .
                     "); ";
+
                 $stmt = $this->connect($dbName)->query($sql);
             }
             //subtitle: id+name
@@ -348,11 +374,42 @@ class Initial extends Dbh
               `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
             $stmt = $this->connect($dbName)->query($sql);
-            //create catagory table
-            $sql =" CREATE TABLE `catagory` (
+            //create root table
+            $sql =" CREATE TABLE `root` (
               `id` int(10) NOT NULL PRIMARY KEY auto_increment,
-              `catagory_name` varchar(50) DEFAULT NULL
+              `root_name` varchar(50) DEFAULT NULL,
+              `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+            $stmt = $this->connect($dbName)->query($sql);
+            //create root_content table
+            $sql =" CREATE TABLE `root_content` (
+              `id` int(10) NOT NULL PRIMARY KEY auto_increment,
+              `table_name` varchar(50) DEFAULT NULL,
+              `table_id` int(10) NOT NULL,
+              `root_id` int(10) NOT NULL,
+              FOREIGN KEY (`root_id`) REFERENCES `root` (id),
+              `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+            $stmt = $this->connect($dbName)->query($sql);
+            //create branch table
+            $sql =" CREATE TABLE `branch` (
+              `id` int(10) NOT NULL PRIMARY KEY auto_increment,
+              `branch_name` varchar(50) DEFAULT NULL,
+              `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+            $stmt = $this->connect($dbName)->query($sql);
+            //create branch_content table
+            $sql =" CREATE TABLE `branch_content` (
+              `id` int(10) NOT NULL PRIMARY KEY auto_increment,
+              `component_id` int(10) NOT NULL,
+              `assembly_id` int(10) NOT NULL,
+              `branch_id` int(10) NOT NULL,
+              FOREIGN KEY (`component_id`) REFERENCES `components` (id),
+              FOREIGN KEY (`assembly_id`) REFERENCES `assembly` (id),
+              FOREIGN KEY (`branch_id`) REFERENCES `branch` (id),
+              `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+            echo "<hr>".$sql;
             $stmt = $this->connect($dbName)->query($sql);
             //run $sql_array
             foreach ($this->sql_array as $key => $value) {

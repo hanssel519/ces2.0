@@ -24,7 +24,7 @@ require($_SERVER['DOCUMENT_ROOT']."/CEStable/includes/importLibraries.inc.php");
 //echo "<br>id: ".$_GET['componentID'];
 //echo "<br>componentName: ".$_GET['componentName'];
 $component = new Components();
-$component_detail = $component->ceckComponent($_GET['projectName'], $_GET['componentID']);
+$component_detail = $component->checkComponent($_GET['projectName'], $_GET['componentID']);
 
 //echo '<pre>$component_detail: '; print_r($component_detail); echo '</pre>';
 

@@ -1,0 +1,11 @@
+.sub-entry {
+    width: 50%;
+    float: left;
+}
+
+.button {
+    text-align: center;
+    padding-bottom: 50px;
+    padding-top: 10px;
+    clear: both;
+}

@@ -208,7 +208,7 @@ class Components extends Dbh
         }
     }
     //check component
-    public function ceckComponent($projectName, $componentID){
+    public function checkComponent($projectName, $componentID){
         if(! $this->serverConnect() ){
             die('Could not connect: ' . mysql_error());
         }else {

@@ -24,7 +24,7 @@
             $project->newProject($projectName);
             //真的去開db:caseName之下的tables
             $funObj = new Initial($projectName);
-            var_dump($funObj);
+            //var_dump($funObj);
             echo "<script>alert('create successfully!!')</script>";
             echo "<script>window.location.href = '../../index.php'</script>";
             exit();

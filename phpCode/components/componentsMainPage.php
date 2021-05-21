@@ -4,7 +4,33 @@
   include $path;
   require($_SERVER['DOCUMENT_ROOT']."/CEStable/includes/importLibraries.inc.php");
 ?>
-
+<link rel="stylesheet" href="/CEStable/resources/css/main.css">
+<style>
+    .button2 {
+        display: inline-block;
+        width: 100%;
+        padding: 5px 30px;
+        font-size: 20px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        color: #fff;
+        background-color: #69946b;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 0 #999;
+    }
+    .button2:hover {
+        background-color: #3e8e41;
+        color: #fff;
+    }
+    .button2:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+</style>
     <title>Leaf Components Page!</title>
   </head>
   <body>
@@ -42,8 +68,8 @@
             <i class="fas fa-caret-right" width="1em" height="1em"></i>
           </div>
           <div>
-            <h2 class="pb-2"><?php ECHO $item; ?></h2>
-            <a href="leafSelection.php?material=<?php echo $item; ?>" class="btn btn-dark">
+            
+            <a href="leafSelection.php?material=<?php echo $item; ?>" class="button2">
               <?php echo $item; ?>
             </a>
           </div>

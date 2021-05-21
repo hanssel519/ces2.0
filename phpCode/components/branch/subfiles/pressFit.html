@@ -1,0 +1,155 @@
+<div class="container mt-md-4">
+  <div class="row align-items-center">
+    <div class="col"><h4 class="text-center">請選擇要加入的物件</h4></div>
+    <div class="col"><h4 class="text-center">已選物件</h4></div>
+    <div class="col"><h4 class="text-center">文字輸入區</h4></div>
+  </div>
+  <div class="row align-items-center">
+
+      <div class="col">
+          <div class="wrapper">
+              <div class="mt-md-3">
+                  <label for="pressFit_leafList"><h5>Leaf List</h5></label>
+                  <select class="form-select" size="3" aria-label=" select example" id="pressFit_leafList" name="pressFit_leafList[]" multiple size="8">
+                      <option value="1">One</option>
+                      <option name="2" value="2">Two</option>
+                      <div id="callphp">
+                        <!--call php for data-->
+                      </div>
+
+                  </select>
+                  <button class="mt-md-3 btn btn-success" id="pressFit_leafAdd">Add</button>
+              </div>
+          </div>
+      </div>
+      <div class="col">
+          <div class="wrapper">
+              <div class="m-md-3">
+                  <label for="pressFit_selectedList"><h5>Selected List</h5></label>
+                  <select class="form-select" size="3" aria-label="size 10 select example" id="pressFit_selectedList" name="pressFit_selectedList[]" multiple>
+                  </select>
+                  <button class="mt-md-3 btn btn-success" id="pressFit_btnRemove">Remove Selected items</button>
+              </div>
+          </div>
+      </div>
+<!--not showing-->
+<div class="col">
+    <div class="wrapper">
+        <div class="m-md-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+    </div>
+</div>
+<!--not showing-->
+
+  </div>
+</div>
+
+<script type="text/javascript">
+    const pressFit_leafList = document.querySelector('#pressFit_leafList');
+    const pressFit_leafAdd = document.querySelector('#pressFit_leafAdd');
+    const pressFit_selectedList = document.querySelector('#pressFit_selectedList');
+    const pressFit_btnRemove = document.querySelector('#pressFit_btnRemove');
+    pressFit_leafAdd.onclick = (e) => {
+        e.preventDefault();
+        // save the selected option
+        let selected = [];
+        //record those are selected
+        for (let i = 0; i < pressFit_leafList.options.length; i++) {
+            selected[i] = pressFit_leafList.options[i].selected;
+            pressFit_leafList.options[i].selected = false;
+        }
+
+        // remove all selected option
+        let index = pressFit_leafList.options.length;
+        while (index--) {
+            if (selected[index]) {
+                // create a new option
+                const option = new Option(pressFit_leafList.options[index].value, 'pressFit_'+pressFit_leafList.options[index].value, true, false);
+                pressFit_selectedList.add(option, undefined);
+                console.log(pressFit_leafList.options[index].value);
+                console.log(option);
+                pressFit_leafList.options[index].style.display = 'none';
+            }
+        }
+    };
+    // remove selected option
+    pressFit_btnRemove.onclick = (e) => {
+        e.preventDefault();
+        // save the selected option
+        let selected = [];
+
+        for (let i = 0; i < pressFit_selectedList.options.length; i++) {
+            selected[i] = pressFit_selectedList.options[i].selected;
+        }
+        // remove all selected option
+        let index = pressFit_selectedList.options.length;
+        while (index--) {
+            if (selected[index]) {
+                //丟回bracnh or leaf
+                var type, res;
+                if (pressFit_selectedList.options[index].value.search('pressFit_')>=0) {
+                    type = 'pressFit';
+                    res = pressFit_selectedList.options[index].value.slice(9);
+                    const option = new Option(res, res);
+                    pressFit_leafList.add(option, undefined);
+                }else {
+                    type = 'branch';
+                    res = pressFit_selectedList.options[index].value.slice(7);
+                    const option = new Option(res, res);
+                    //pressFit_branchList.add(option, undefined);
+                }
+                console.log(res);
+                console.log(typeof(res));
+                console.log(pressFit_selectedList.options[index].value);
+                pressFit_selectedList.remove(index);
+            }
+        }
+    };
+
+</script>
+<script>
+$(document).ready(function(){
+
+    $.ajax({
+      method: "POST",
+      url: 'subfiles/showOptionsComponent.php',
+      cache: false,
+      dataType:"json",
+      data: {},
+      success: function (data) {
+          //console.log(data);
+        console.log('success!!!!!');
+        var html = '';
+        console.log(data);
+        console.log(data.length);
+        if (data.length == 0) {
+            html += '<option disabled selected value> -- no components -- </option>';
+        }else {
+            for(var count = 0; count < data.length; count++)
+            {
+              html += '<option value="'+data[count].name+'">'+data[count].name+'</option>';
+            }
+        }
+console.log(html);
+        //console.log(html);
+document.getElementById("pressFit_leafList").innerHTML=html;
+
+        //$('#callphp').html(html);
+        //$('#callphp').selectpicker('refresh');
+
+      },
+      //error: function(err){console.log(err)},
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        alert(XMLHttpRequest.status);
+        alert(XMLHttpRequest.readyState);
+        alert(textStatus);
+        }
+    })
+      .done(function( response ) {
+          console.log('ajax doneee');
+      });
+
+});
+</script>
