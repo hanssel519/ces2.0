@@ -30,7 +30,38 @@
 
 
     //$return = $components->modifyComponent($_GET['projectName'], $_GET['componentID'], $_POST['componentName']);
+    /*
+    $return  => Array
+    (
+        [info] => Array(
+                [projectName] => n8
+                [componentID] => 4
+                [componentName] => al2
+                [material] => AL
+            )
 
+        [small_item_include] => Array
+            (
+                [塑膠] => 1
+                [鋁] => 1
+                [鋁擠] => 0
+                [髮絲] => 0
+                [衝壓] => 0
+                [埋射] => 0
+                [衝切] => 0
+                [研磨] => 0
+                [cnc] => 0
+                [噴砂] => 0
+                [陽極] => 0
+                [加工] => 0
+                [蝕刻] => 0
+                [雷雕] => 0
+                [印刷] => 0
+            )
+
+    )
+
+    */
 ?>
 
     <h2 class="text-success">Project Name: <?php echo $return['info']['projectName']; ?></h2>
@@ -65,7 +96,9 @@
                   ?>
 
                   <div class="form-check mt-4">
-                    <input class="form-check-input" type="checkbox" value=<?php echo $key; ?> id=<?php echo $key; ?> name="selection[]" >
+                    <input class="form-check-input" type="checkbox" value=<?php echo $key; ?> id=<?php echo $key; ?> name="selection[]" <?php if ($return['small_item_include'][$key]){
+                        echo "checked";
+                    } ?>>
                     <label class="form-check-label" for=<?php echo $key; ?>>
                       <?php
                       if ($return['small_item_include'][$key]) {

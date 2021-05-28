@@ -391,7 +391,7 @@ class Components extends Dbh
             $sth->execute(array($obj['component_name'], $obj['layer'], $obj['supplier'], $obj['amount'], $obj['remark']));
 
             echo "<hr>update component: ".$sql;
-            //$material = $this->connect($obj['info']['projectName'])->query($sql)->fetch();
+            
             //用$componentID抓 component的材料跟材料id====================
             $sql = "SELECT material, material_id FROM `components` WHERE id = ".$obj['componentID'].";";
             $material = $this->connect($obj['info']['projectName'])->query($sql)->fetch();
@@ -495,10 +495,45 @@ class Components extends Dbh
 
     }
 
+
     //delete component
     public function deleteComponent($projectName, $componentID, $componentName){
-        // code...
+        if(! $this->serverConnect() ){
+            die('Could not connect: ' . mysql_error());
+        }else {
+            //`id`, `name`, `material`, `material_id`, `layer`, `remark`, `submission_date`
+            //用$componentID抓 component的材料跟材料id====================
+            $sql = "SELECT material, material_id FROM `components` WHERE id = ".$componentID.";";
+            $material = $this->connect($projectName)->query($sql)->fetch();
+
+            $small_items = implode(", ", $this->big_item[$material['material']]);
+
+            $sql = "SELECT ".$small_items." FROM `".$material['material']."` WHERE id = ".$material['material_id'];
+
+            $small_item_withID = $this->connect($projectName)->query($sql)->fetch();
+
+            //DELETE attribute那層database material_id 資料 (component-material_id = AL-id)
+            $sql = "DELETE FROM `".$material['material']."` WHERE id = ".$material['material_id'];
+            $sql_con = $this->connect($projectName)->query($sql);
+
+            $sql = "DELETE FROM `components` WHERE id = ".$componentID.";";
+            $sql_con = $this->connect($projectName)->query($sql);
+
+            foreach ($small_item_withID as $small_item_name => $small_item_id) {
+                if ($small_item_id) {
+                    //`加工`
+                    $sql = "DELETE FROM `".$small_item_name ."` WHERE id = ".$small_item_id.";";
+                    //var_dump($small_item_id);
+                    var_dump($sql);
+                    $sql_con = $this->connect($projectName)->query($sql);
+                    var_dump($sql_con);
+
+                }
+            }
+
+        }
     }
+
     //個別component修改 redundant
     public function singleComponent($projectName, $componentid, $action){
         switch ($action) {

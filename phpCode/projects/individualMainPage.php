@@ -20,9 +20,11 @@
         }
       .button2 {
           display: inline-block;
-          width: 100%;
+          width: 340PX;
+          height: 85PX;
+          position: relative;
           padding: 5px 30px;
-          font-size: 20px;
+          font-size: 25px;
           cursor: pointer;
           text-align: center;
           text-decoration: none;

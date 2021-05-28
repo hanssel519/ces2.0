@@ -19,17 +19,17 @@ selection(
     [0] => 塑膠
     [1] => 衝壓
 )
-info(
+$_POST['info'](
     [projectName] => 3
     [componentID] => 2
     [componentName] => al1
     [material] => AL
 )
-small_item_include(
+$_POST['small_item_include'](
     [塑膠] => 1
     [鋁] => 0
     [鋁擠] => 0
-    [髮絲] => 0
+    [髮絲] => 0 ...
 )
 */
 
@@ -94,21 +94,22 @@ foreach ($_POST as $key => $value) {
 
             <?php
             $layer = $minorElement->placeholder($_POST['info']['projectName'], 'components', $_POST['info']['componentID'], 'layer');
+
             ?>
             <h3><label for="layer" class="form-label">layer</label></h3>
-            <input type="text" class="form-control" id="layer" name = "layer" value=<?php echo $layer;?>>
+            <textarea class="form-control" id="layer" name = "layer"> <?php echo $layer; ?> </textarea>
 
             <?php
             $supplier = $minorElement->placeholder($_POST['info']['projectName'], 'components', $_POST['info']['componentID'], 'supplier');
             ?>
             <h3><label for="supplier" class="form-label">供應商</label></h3>
-            <input type="text" class="form-control" id="supplier" name = "supplier" value=<?php echo $supplier;?>>
+            <textarea type="text" class="form-control" id="supplier" name = "supplier"> <?php echo $supplier; ?></textarea>
             <?php
             $amount = $minorElement->placeholder($_POST['info']['projectName'], 'components', $_POST['info']['componentID'], 'amount');
             ?>
 
             <h3><label for="amount" class="form-label">數量</label></h3>
-            <input type="text" class="form-control" id="amount" name = "amount" value=<?php echo $amount;?>>
+            <textarea type="text" class="form-control" id="amount" name = "amount"> <?php echo $amount; ?></textarea>
 
             </div>
 
@@ -129,7 +130,7 @@ foreach ($_POST as $key => $value) {
                     ?>
                     <div class="mb-4">
                       <label for=<?php echo $key; ?> class="form-label"><?php ECHO $key.$value ?></label>
-                      <input type="text" class="form-control" id=<?php echo $key; ?> name = <?php echo $key; ?> value=<?php echo $default_value; ?>>
+                      <textarea type="text" class="form-control" id=<?php echo $key; ?> name = <?php echo $key; ?>> <?php echo $default_value; ?></textarea>
                     </div>
                 <?php endif; ?>
 
@@ -142,12 +143,42 @@ foreach ($_POST as $key => $value) {
           ?>
           <div class="mb-4">
           <h3><label for="remark" class="form-label">備註</label></h3>
-          <input type="text" class="form-control" id="remark" name = "remark" value = <?php echo $remark;?>>
+          <textarea type="text" class="form-control" id="remark" name = "remark"><?php echo $remark; ?></textarea>
           </div>
 
           <!--pass $items with hidden-->
           <?php echo '<pre>'; print_r($items); echo '</pre>'; ?>
+        <!--
+        $items
+        (
+            [塑膠] => Array
+                (
+                    [塑料名稱1] =>
+                    [重量1] => (克(含料頭))
+                    [塑料名稱2] =>
+                    [重量2] => (克(含料頭))
+                )
 
+            [鋁] => Array
+                (
+                    [鋁長] => (下料尺寸mm)
+                    [鋁寬] => (下料尺寸mm)
+                    [鋁厚] => (下料尺寸mm)
+                    [鋁金屬名稱] =>
+                    [鋁比重] =>
+                )
+
+            [鋁擠] => Array
+                (
+                    [鋁擠工程種類] => (參照設計)
+                    [鋁擠線種類] =>
+                    [鋁擠線編號] =>
+                    [鋁擠秒數] =>
+                    [鋁擠良率] =>
+                )
+
+        )
+        -->
           <input type='hidden' name='items' value="<?php echo htmlentities(serialize($items)); ?>" />
           <input type='hidden' name='selections' value="<?php echo htmlentities(serialize($selections)); ?>" />
           <?php $small_item_for_your_department = unserialize($_POST['small_item_for_your_department']); ?>

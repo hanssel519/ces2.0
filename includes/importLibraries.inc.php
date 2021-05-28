@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="/CEStable/library/bootstrap-5.0.0-beta3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/CEStable/library/fontawesome-free-5.15.3-web/fontawesome-free-5.15.3-web/css/all.css">
 
+<script src="/CEStable/library/sweetalert/sweetalert.min.js"></script>
 
+<!--<script src="/CEStable/library/sweetalert/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="/CEStable/library/sweetalert/sweetalert2.min.css">-->
 <!--
 
     <title>

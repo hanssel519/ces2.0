@@ -16,12 +16,19 @@
 <?php print_r($_COOKIE); ?>
   <div class="container">
     <div class="wrapper m-md-2 p-md-5">
-      <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName']; ?></h1>
+        <div class="row">
+            <div class="col-8">
+                <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName'];?></h2>
+            </div>
+            <div class="col-4">
+                <a href="../projects/individualMainPage.php?projectName=<?php echo $_COOKIE['projectName']; ?>" class="btn btn-outline-success float-end">返回當前project首頁</a>
+            </div>
+        </div>
 
       <div class="container py-5" id="hanging-icons">
         <h2 class="pb-2 border-bottom">Fill the Blanks (<?php echo $_COOKIE['material']; ?>)</h2>
         <!--need to pass $_COOKIE['material']+$items-->
-        <form action="action/fillInputAction.php" method="POST">
+        <form class="form-validation" action="action/fillInputAction.php" method="POST">
             <?php
             if (!isset($_POST['selection'])) {
                 header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -37,14 +44,15 @@
             echo '<pre>'; print_r($keys); echo '</pre>';*/
             ?>
             <div class="mb-4">
-            <h3><label for="component_name" class="form-label">component名稱</label></h3>
-            <input type="text" class="form-control" id="component_name" name = "component_name">
+            <h3><label for="component_name" class="form-label ">component名稱</label></h3>
+            <input type="text" class="form-control mb-4" id="component_name" name = "component_name" autocomplete="off" required placeholder='This input is required'>
             <h3><label for="layer" class="form-label">layer</label></h3>
-            <input type="text" class="form-control" id="layer" name = "layer">
+            <textarea type="text" class="form-control mb-4" id="layer" name = "layer"></textarea>
+
             <h3><label for="supplier" class="form-label">供應商</label></h3>
-            <input type="text" class="form-control" id="supplier" name = "supplier">
+            <textarea type="text" class="form-control mb-4" id="supplier" name = "supplier"></textarea>
             <h3><label for="amount" class="form-label">數量</label></h3>
-            <input type="text" class="form-control" id="amount" name = "amount">
+            <textarea type="text" class="form-control" id="amount" name = "amount"></textarea>
             </div>
 
           <?php foreach ($items as $item => $detail): ?>
@@ -54,7 +62,7 @@
                 <?php if (strcmp($key, 'submission_date')): ?>
                     <div class="mb-4">
                       <label for=<?php echo $key; ?> class="form-label"><?php ECHO $key.$value ?></label>
-                      <input type="text" class="form-control" id=<?php echo $key; ?> name = <?php echo $key; ?>>
+                      <textarea type="text" class="form-control mb-4" id=<?php echo $key; ?> name = <?php echo $key; ?>></textarea>
                     </div>
                 <?php endif; ?>
 
@@ -64,7 +72,7 @@
 
           <div class="mb-4">
           <h3><label for="remark" class="form-label">備註</label></h3>
-          <input type="text" class="form-control" id="remark" name = "remark">
+          <textarea type="text" class="form-control" id="remark" name = "remark"></textarea>
           </div>
 
           <!--pass $items with hidden-->

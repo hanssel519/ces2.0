@@ -28,7 +28,14 @@
 <?php print_r($_COOKIE); ?>
   <div class="container">
     <div class="wrapper m-md-2 p-md-5">
-      <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName']; ?></h1>
+        <div class="row">
+            <div class="col-8">
+                <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName'];?></h2>
+            </div>
+            <div class="col-4">
+                <a href="../projects/individualMainPage.php?projectName=<?php echo $_COOKIE['projectName']; ?>" class="btn btn-outline-success float-end">返回當前project首頁</a>
+            </div>
+        </div>
           <?php
             $user = new Users($_SERVER['PHP_AUTH_USER']);
             //$user->getUserName();
@@ -57,7 +64,7 @@
             foreach ($items[$_GET['material']] as $key => $value) {
                 if ($value==$department) {//get 'me' or 'id' part
                     ?>
-                    <div class="form-check mt-4">
+                    <div class="form-check mt-4 fs-4">
                       <input class="form-check-input" type="checkbox" value=<?php echo $key; ?> id=<?php echo $key; ?> name="selection[]" >
                       <label class="form-check-label" for=<?php echo $key; ?>>
                         <?php echo $key; ?>

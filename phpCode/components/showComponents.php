@@ -12,6 +12,17 @@
   </head>
   <body>
 
+    <script type="text/javascript">
+    function deleteSuccess() {
+        swal({
+          title: '刪除component成功!',
+          //text: '誤加分號,單雙引號',
+          //timer: 3000,
+          button: true,
+          icon: 'success'
+        });
+    }
+    </script>
 
 <?php
   require('../../includes/template/header.php');
@@ -20,6 +31,13 @@
 
 <?php print_r($_COOKIE); ?>
 
+<?php
+if (isset($_GET['flag'])) {
+    if ($_GET['flag'] == 'delete') {
+        echo "<script>deleteSuccess()</script>";
+    }
+}
+?>
 <!--modal for component copy-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -69,16 +87,16 @@
             <div class="list-group list-group-flush">
                 <div class="list-group-item">
                     <div class="row align-items-center">
-                        <div class="col">
+                        <div class="col fs-4">
                             name
                         </div>
-                        <div class="col">
+                        <div class="col fs-4">
                             material
                         </div>
-                        <div class="col">
+                        <div class="col fs-4">
                             submission_date
                         </div>
-                        <div class="col">
+                        <div class="col fs-4">
                             Action
                         </div>
                     </div>
@@ -103,16 +121,16 @@
                       <div class="list-group-item list-group-item-action list-group-item-light">
                           <div class="container">
                           <div class="row align-items-center">
-                            <div class="col">
+                            <div class="col fs-4">
                                 <?php echo $value['name']. ",id: ".$value['id']?>
                             </div>
-                            <div class="col">
+                            <div class="col fs-4">
                                 <?php echo $value['material'] ?>
                             </div>
-                            <div class="col">
+                            <div class="col fs-4">
                                 <?php echo $value['submission_date'] ?>
                             </div>
-                            <div class="col">
+                            <div class="col fs-4">
                                 <a type="button" href="singleComponent/singleComponentCheck.php?projectName=<?php echo $_COOKIE['projectName'];?>&componentID=<?php echo $value['id'];?>&componentName=<?php echo $value['name']; ?>&action=check" class="btn btn-secondary" name="button">查看</a>
 
                                 <a type="button" href="singleComponent/singleComponentModify.php?projectName=<?php echo $_COOKIE['projectName'];?>&componentID=<?php echo $value['id'];?>&componentName=<?php echo $value['name']; ?>&action=modify" class="btn btn-secondary" name="button">修改</a>

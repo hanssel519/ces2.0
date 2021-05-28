@@ -77,7 +77,7 @@ $component_detail = $component->checkComponent($_GET['projectName'], $_GET['comp
                         <?php foreach ($value as $small_item_name => $small_item_data): ?>
                         <tr>
                             <td><?php echo $small_item_name?></td>
-                            <td><?php echo $small_item_data?></td>
+                            <td><?php echo nl2br(htmlspecialchars($small_item_data));?></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

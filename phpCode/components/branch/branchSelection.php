@@ -42,7 +42,7 @@
             foreach ($items['Assembly'] as $key => $value) {
                 if ($value==$department) {//get 'me' or 'id' part
                     ?>
-                    <div class="form-check mt-4">
+                    <div class="form-check mt-4 fs-4">
                       <input class="form-check-input" type="checkbox" value=<?php echo $key; ?> id=<?php echo $key; ?> name="selection[]" >
                       <label class="form-check-label" for=<?php echo $key; ?>>
                         <?php echo $key; ?>
@@ -55,7 +55,6 @@
             <br>
             <button type="submit" class="btn btn-success">Submit</button>
           </form>
-
 
 
       </div>

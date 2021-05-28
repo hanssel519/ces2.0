@@ -284,7 +284,12 @@ class Initial extends Dbh
     }*/
     function __construct($dbName){
     //create database
-
+        //$dbName = $dbName;
+        echo "<hr>in init construct: ". $dbName;
+        echo "<hr>in init construct: ". json_encode(htmlspecialchars($dbName));
+        echo "<hr>in init construct: ".htmlentities($dbName, ENT_QUOTES, 'UTF-8');
+        //$dbName = "'".$dbName."'";
+        echo "<hr>in init construct: ".$dbName;
         if(! $this->connect($dbName) ){
             die('Could not connect: ' . mysql_error());
         }else {
@@ -310,8 +315,8 @@ class Initial extends Dbh
               `tables` varchar(50) DEFAULT NULL,
               `熱熔id` int(10) DEFAULT NULL,
               `子件id` int(10) DEFAULT NULL,
-              `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-              FOREIGN KEY (`熱熔id`) REFERENCES `熱熔` (id)
+              `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+              /*FOREIGN KEY (熱熔id) REFERENCES 熱熔 (id)*/
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
             echo "<hr>".$sql;
             $stmt = $this->connect($dbName)->query($sql);
@@ -321,8 +326,8 @@ class Initial extends Dbh
               `tables` varchar(50) DEFAULT NULL,
               `壓合id` int(10) DEFAULT NULL,
               `子件id` int(10) DEFAULT NULL,
-              `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-              FOREIGN KEY (`壓合id`) REFERENCES `壓合` (id)
+              `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+              /*FOREIGN KEY (壓合id) REFERENCES 壓合 (id)*/
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
             echo "<hr>".$sql;
             $stmt = $this->connect($dbName)->query($sql);
@@ -334,15 +339,15 @@ class Initial extends Dbh
                 $str1 ="";
                 foreach ($value as $item) {
                     $str .= "`".$item."` INT, ";
-                    $str1 .= ", FOREIGN KEY (`" . $item ."`) REFERENCES `".$item."` (id)";
+                    //$str1 .= ", FOREIGN KEY (`" . $item ."`) REFERENCES `".$item."` (id)";
                 }
                 $sql = "CREATE TABLE ". $key ."( ".
                     "id INT NOT NULL AUTO_INCREMENT, ".
                     $str .
                     "submission_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, ".
-                    "PRIMARY KEY ( id )".
-                    $str1 .
-                    "); ";
+                    "PRIMARY KEY ( id )); ";
+                    //.$str1 .
+
 
                 $stmt = $this->connect($dbName)->query($sql);
             }
@@ -387,7 +392,7 @@ class Initial extends Dbh
               `table_name` varchar(50) DEFAULT NULL,
               `table_id` int(10) NOT NULL,
               `root_id` int(10) NOT NULL,
-              FOREIGN KEY (`root_id`) REFERENCES `root` (id),
+              /*FOREIGN KEY ( root_id) REFERENCES root (id),*/
               `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
             $stmt = $this->connect($dbName)->query($sql);
@@ -401,12 +406,11 @@ class Initial extends Dbh
             //create branch_content table
             $sql =" CREATE TABLE `branch_content` (
               `id` int(10) NOT NULL PRIMARY KEY auto_increment,
-              `component_id` int(10) NOT NULL,
               `assembly_id` int(10) NOT NULL,
               `branch_id` int(10) NOT NULL,
-              FOREIGN KEY (`component_id`) REFERENCES `components` (id),
-              FOREIGN KEY (`assembly_id`) REFERENCES `assembly` (id),
-              FOREIGN KEY (`branch_id`) REFERENCES `branch` (id),
+              /*FOREIGN KEY (component_id) REFERENCES components (id),
+              FOREIGN KEY (assembly_id) REFERENCES assembly (id),
+              FOREIGN KEY (branch_id) REFERENCES branch (id),*/
               `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
             echo "<hr>".$sql;

@@ -66,13 +66,12 @@
                     ?>
 
                     <?php
-                } ?>
-                <?php if (strcmp($key, 'submission_date')): ?>
+                }elseif(strcmp($key, 'submission_date')){ ?>
                     <div class="mb-4">
                       <label for=<?php echo $key; ?> class="form-label"><?php ECHO $key.$value ?></label>
                       <input type="text" class="form-control" id=<?php echo $key; ?> name = <?php echo $key; ?>>
                     </div>
-                <?php endif; ?>
+                <?php } ?>
 
             <?php endforeach; ?>
           </div>

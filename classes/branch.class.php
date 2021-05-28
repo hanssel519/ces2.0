@@ -27,8 +27,10 @@ class Branch extends Dbh
         return $total;
     }
     //add branch
-    public function addBranch($projectName='', $items, $branchName){
-        $sql = "INSERT INTO `branch` (name) VALUES (". $branchName .");";
+    public function addBranch($projectName='', $items, $all){
+        echo '<pre>'; print_r($items,); echo '</pre>';
+        echo '<pre>'; print_r($all); echo '</pre>';
+        $sql = "INSERT INTO `branch` (name) VALUES (". $all['component_name'] .");";
         $stmt = $this->connect($projectName)->query($sql);
 
     }

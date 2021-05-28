@@ -8,9 +8,11 @@
 <style>
     .button2 {
         display: inline-block;
-        width: 100%;
+        width: 240PX;
+        height: 60PX;
+        position: relative;
         padding: 5px 30px;
-        font-size: 20px;
+        font-size: 30px;
         cursor: pointer;
         text-align: center;
         text-decoration: none;
@@ -30,6 +32,7 @@
         box-shadow: 0 5px #666;
         transform: translateY(4px);
     }
+
 </style>
     <title>Leaf Components Page!</title>
   </head>
@@ -44,7 +47,7 @@
     'Plastic',
     'MG',
     'AL',
-    'Assembly',
+    //'Assembly',
     'Sheet_Metal',
     'XX',
   );
@@ -52,7 +55,15 @@
 <?php print_r($_COOKIE); ?>
   <div class="container">
     <div class="wrapper m-md-2 p-md-5">
-      <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName'];?></h1>
+        <div class="row">
+            <div class="col-8">
+                <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName'];?></h2>
+            </div>
+            <div class="col-4">
+                <a href="../projects/individualMainPage.php?projectName=<?php echo $_COOKIE['projectName']; ?>" class="btn btn-outline-success float-end">返回當前project首頁</a>
+            </div>
+        </div>
+
 
       <div class="container py-5" id="hanging-icons">
         <h2 class="pb-2 border-bottom">Leaf Components Page</h2>
@@ -68,7 +79,7 @@
             <i class="fas fa-caret-right" width="1em" height="1em"></i>
           </div>
           <div>
-            
+
             <a href="leafSelection.php?material=<?php echo $item; ?>" class="button2">
               <?php echo $item; ?>
             </a>

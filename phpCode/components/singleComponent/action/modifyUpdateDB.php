@@ -10,7 +10,7 @@ if (isset($_POST['info'])) {
     print_r($_POST['info']['componentID']);
     echo "<hr>";
     $obj = new Components();
-    $obj->deleteComponent($_POST['info']['projectName'], $_POST['info']['componentID'], $_POST['info']['componentName']);
+    //$obj->deleteComponent($_POST['info']['projectName'], $_POST['info']['componentID'], $_POST['info']['componentName']);
 }
 
 $items = unserialize($_POST['items']);
