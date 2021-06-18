@@ -177,7 +177,7 @@ if (!isset($_COOKIE['projectName'])) {
           <input type='hidden' name='items' value="<?php echo htmlentities(serialize($items)); ?>" />
           <input type='hidden' name='selections' value="<?php echo htmlentities(serialize($selections)); ?>" />
           <?php $small_item_for_your_department = unserialize($_POST['small_item_for_your_department']); ?>
-          <input type='hidden' name='small_item_for_your_department' value="<?php echo $_POST['small_item_for_your_department']; ?>" />
+          <input type='hidden' name='small_item_for_your_department' value="<?php echo htmlentities($_POST['small_item_for_your_department']); ?>" />
           <!--htmlentities(serialize($small_item_for_your_department));-->
           <!--for modify的 delete舊資料-->
           <input type='hidden' name='componentID' value="<?php echo $_POST['info']['componentID']; ?>" />

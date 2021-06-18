@@ -16,6 +16,7 @@ $_POST['items'] = unserialize($_POST['items']);
 $_POST['selections'] = unserialize($_POST['selections']);
 $_POST['small_item_for_your_department'] = unserialize($_POST['small_item_for_your_department']);
 echo '<pre>'; print_r($_POST); echo '</pre>';
+
 $obj = new Components();
 $component_serial_num = $obj->getSerialNum($_POST['info']['projectName'], $_POST['info']['componentID']);
 //compare db: serial_number with cookie:serial_number
