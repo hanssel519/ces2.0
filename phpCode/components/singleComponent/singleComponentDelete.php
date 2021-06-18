@@ -18,54 +18,50 @@ require($_SERVER['DOCUMENT_ROOT']."/CEStable/includes/importLibraries.inc.php");
   require('../../../includes/template/header.php');
 ?>
 
-
-
-<?php print_r($_COOKIE); ?>
+<?php
+var_dump($_GET);
+echo "<br>";
+var_dump($_POST);
+echo "<br>";
+var_dump($_COOKIE);
+if (!isset($_COOKIE['projectName'])) {
+    header("Location: ../../index.php");
+}elseif (!isset($_GET['componentID'])||!isset($_GET['componentName'])||!isset($_GET['action'])) {
+    header("Location: ../showComponents.php");
+}elseif (empty($_GET['componentID'])||empty($_GET['componentName'])||empty($_GET['action'])) {
+    header("Location: ../showComponents.php");
+}
+?>
 
 <?php
-//echo "projectName: ".$_GET['projectName'];
-//echo "<br>id: ".$_GET['componentID'];
-//echo "<br>componentName: ".$_GET['componentName'];
 $component = new Components();
 $component_detail = $component->checkComponent($_GET['projectName'], $_GET['componentID']);
 
-//echo '<pre>$component_detail: '; print_r($component_detail); echo '</pre>'; style="float:right"
 ?>
 
 
 <div class="container">
   <div class="wrapper m-md-2 p-md-5">
-    <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName']; ?></h1>
+      <div class="container">
+          <div class="row">
+              <div class="col-8">
+                  <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName'];?></h2>
+              </div>
+              <div class="col-4">
+                  <a href="../showComponents.php" class="btn btn-outline-success float-end">返回show components</a>
+              </div>
+          </div>
+      </div>
+
 
       <div class="container py-5" id="hanging-icons">
       	<form method="post">
-      	  <a style="float:right" name = "deletebtn" class="btn btn-dark" href="singleComponentDelete2.php?projectName=<?php echo $_GET['projectName'];?>&componentID=<?php echo $_GET['componentID'];?>&componentName=<?php echo $_GET['componentName']; ?>&action=delete" value = "Delete">Delete</a>
+      	  <a style="float:right" name = "deletebtn" class="btn btn-danger" href="singleComponentDelete2.php?projectName=<?php echo $_GET['projectName'];?>&componentID=<?php echo $_GET['componentID'];?>&componentName=<?php echo $_GET['componentName']; ?>&action=delete" value = "Delete">確定刪除請按這</a>
           <h2 class="pb-2 border-bottom">  確定要刪除 <?php echo $_GET['componentName']; ?> ?</h2>
 		</form>
 
 
-
-
-          <div class="container py-3" id="hanging-icons">
-          <!--<?php //foreach ($component_detail as $small_item => $value): ?>
-          <div class="wrapper">
-            <h3><?php //echo $small_item; ?></h3>
-            <hr>
-            <?php //foreach ($value as $small_item_name => $small_item_data): ?>
-              <div class="row md-6">
-                  <div class="col">
-                      <?php //echo $small_item_name?>
-                  </div>
-                  <div class="col">
-                      <?php //echo $small_item_data?>
-                  </div>
-                  <hr>
-              </div>
-            <?php //endforeach; ?>
-          </div>
-          <?php //endforeach; ?>
-
-          <br><br><br>-->
+        <div class="container py-3" id="hanging-icons">
 
         <?php foreach ($component_detail as $small_item => $value): ?>
             <h3><?php echo $small_item; ?></h3>

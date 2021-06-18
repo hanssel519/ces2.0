@@ -13,40 +13,40 @@
   require('../../../../includes/template/header.php');
 ?>
 <!--body contents go here-->
-<?php print_r($_COOKIE);
-/*
-selection(
-    [0] => 塑膠
-    [1] => 衝壓
-)
-$_POST['info'](
-    [projectName] => 3
-    [componentID] => 2
-    [componentName] => al1
-    [material] => AL
-)
-$_POST['small_item_include'](
-    [塑膠] => 1
-    [鋁] => 0
-    [鋁擠] => 0
-    [髮絲] => 0 ...
-)
-*/
-
-?>
-
-<?php print_r($_POST); ?>
-
 <?php
-/*echo '<pre>'; print_r($_POST['info']); echo '</pre>';
-foreach ($_POST as $key => $value) {
-    echo '<pre>'; print_r($key); echo '</pre>';
-    echo '<pre>'; print_r($value); echo '</pre>';
-}*/
+
+echo 'GET<pre>'; print_r($_GET); echo '</pre>';
+echo "<br>";
+echo 'POST<pre>'; print_r($_POST); echo '</pre>';
+echo "<br>";
+echo 'COOKIE<pre>'; print_r($_COOKIE); echo '</pre>';
+echo "<hr>";
+/*echo "<br>";
+echo '<pre>'; print_r(unserialize($_POST['small_item_for_your_department'])); echo '</pre>';
+echo "<br>";
+$small_item_for_your_department = unserialize($_POST['small_item_for_your_department']);
+
+echo '$small_item_for_your_department: <pre>'; print_r(htmlentities(serialize($small_item_for_your_department))); echo '</pre>';*/
+
+if (!isset($_COOKIE['projectName'])) {
+    header("Location: ../../index.php");
+}elseif (!isset($_POST['selection']) || !isset($_POST['info'])|| !isset($_POST['small_item_include'])|| !isset($_POST['small_item_for_your_department'])) {
+    header("Location: ../../showComponents.php");
+}
 ?>
+
   <div class="container">
     <div class="wrapper m-md-2 p-md-5">
-      <h2 class="text-success">Project Name: <?php echo $_POST['info']['projectName']; ?></h1>
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                    <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName'];?></h2>
+                </div>
+                <div class="col-4">
+                    <a href="../../showComponents.php" class="btn btn-outline-success float-end">返回show components</a>
+                </div>
+            </div>
+        </div>
 
       <div class="container py-5" id="hanging-icons">
         <h2 class="pb-2 border-bottom">Fill the Blanks (<?php echo $_POST['info']['material']; ?>)</h2>
@@ -63,27 +63,25 @@ foreach ($_POST as $key => $value) {
             $minorElement = new MinorElement();
             $items = $minorElement->queryShow($_POST['info']['projectName'], $selections);
             /*
+            $items =
             Array
-        (
-            [塑膠] => Array
-                (
-                    [塑料名稱1] =>
-                    [重量1] => (克(含料頭))
-                    [塑料名稱2] =>
-                )
+            (
+                [塑膠] => Array
+                    (
+                        [塑料名稱1] =>
+                        [重量1] => (克(含料頭))
+                        [塑料名稱2] =>
+                    )
 
-            [衝壓] => Array
-                (
-                    [衝壓工程種類] => (參照設計)
-                    [衝壓機台廠牌] =>
-                    [衝壓機台型號或噸數] =>
-                )
-        )
+                [衝壓] => Array
+                    (
+                        [衝壓工程種類] => (參照設計)
+                        [衝壓機台廠牌] =>
+                        [衝壓機台型號或噸數] =>
+                    )
+            )
             */
             //echo '<pre>'; print_r($items); echo '</pre>';
-            /*
-            $keys = array_keys($items);
-            echo '<pre>'; print_r($keys); echo '</pre>';*/
             ?>
             <div class="mb-4">
             <?php
@@ -117,9 +115,7 @@ foreach ($_POST as $key => $value) {
           <div class="wrapper">
             <h3><?php echo $small_item; ?></h3>
             <?php foreach ($detail as $key => $value): ?>
-                <?php if (strcmp($key, 'submission_date')): ?>
-                    <?php
-
+                <?php if (strcmp($key, 'submission_date')):
                     $small_item_id = $minorElement->getID($_POST['info']['projectName'], $_POST['info']['componentID'], $small_item);
                     if ($small_item_id) {
                         $default_value = $minorElement->placeholder($_POST['info']['projectName'], $small_item, $small_item_id, $key);
@@ -176,13 +172,13 @@ foreach ($_POST as $key => $value) {
                     [鋁擠秒數] =>
                     [鋁擠良率] =>
                 )
-
         )
         -->
           <input type='hidden' name='items' value="<?php echo htmlentities(serialize($items)); ?>" />
           <input type='hidden' name='selections' value="<?php echo htmlentities(serialize($selections)); ?>" />
           <?php $small_item_for_your_department = unserialize($_POST['small_item_for_your_department']); ?>
-          <input type='hidden' name='small_item_for_your_department' value="<?php echo htmlentities(serialize($small_item_for_your_department)); ?>" />
+          <input type='hidden' name='small_item_for_your_department' value="<?php echo $_POST['small_item_for_your_department']; ?>" />
+          <!--htmlentities(serialize($small_item_for_your_department));-->
           <!--for modify的 delete舊資料-->
           <input type='hidden' name='componentID' value="<?php echo $_POST['info']['componentID']; ?>" />
 

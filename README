@@ -11,3 +11,6 @@
 	add classes(root\branch)
 2021/05/28
 	do project deletion and copy.
+2021/06/18
+	check post/get in url
+	set serial number in `components` to avoid multi edition simultaneously.

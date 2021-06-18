@@ -58,8 +58,9 @@
 //從上一頁選擇過來的
 
 //setcookie('projectName', $_GET['projectName'], time() + 3600, "/");
-var_dump($_GET['projectName']);
-echo $_GET['projectName'];
+var_dump($_GET);
+echo "<br>";
+var_dump($_POST);
 if (isset($_GET['projectName'])) {
     if(isset($_COOKIE['projectName'])) {
         unset($_COOKIE['projectName']);
@@ -71,7 +72,13 @@ if (isset($_GET['projectName'])) {
     header("Location: ../index.php");
 }
 ?>
-<?php print_r($_COOKIE); ?>
+<?php
+//check if the project exists
+$obj = new Project();
+if (!$obj->checkIfProExist($_GET['projectName'])) {
+    header("Location: ../index.php");
+}
+?>
 
   <div class="container">
     <div class="wrapper m-md-2 p-md-5">

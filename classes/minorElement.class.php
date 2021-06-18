@@ -144,10 +144,6 @@ class MinorElement extends Dbh
             $stmt =  $this->connect($projectName)->prepare($sql);
             $count = $stmt->execute($new_id);
             echo "<hr>".$sql;
-            //$stmt = $this->connect($projectName)->query($sql);
-
-
-            //echo '<pre>'; print_r($item_id); echo '</pre>';
             if ($stmt) {
                 //大item塞給component
                 $sql = "SELECT id FROM `".$material."`ORDER BY id DESC LIMIT 1;";
@@ -157,7 +153,6 @@ class MinorElement extends Dbh
                 $sql = "INSERT INTO `components` (`name`, `material`, `material_id`, `layer`, `supplier`, `amount`, `remark`) VALUES (?, ?, ?, ?, ?, ?, ?);";
                 $stmt = $this->connect($projectName)->prepare($sql);
                 $count = $stmt->execute(array($inputPost['component_name'], $material, $last_id, $inputPost['layer'], $inputPost['supplier'], $inputPost['amount'],$inputPost['remark']));
-                //$stmt = $this->connect($projectName)->query($sql);
 
                 //綁定到component成功!!redirect to show components
                 //components/action/fillInputAction.php=>showComponents.php

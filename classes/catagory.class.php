@@ -15,10 +15,6 @@ class catagory extends Dbh
             FROM subtitle
             INNER JOIN `".$title."`
             ON subtitle.id=`".$title."`.subtitle_id;";
-        //echo $sql;
-        //echo $_COOKIE['projectName'];
-        //$stmt = $this->connect()->prepare($sql);
-        //$data = $this->connect()->query($sql)->fetchAll();
         $data = $this->connect($_COOKIE['projectName'])->query($sql)->fetchAll();
         //忘記選資料庫
         $output[] = array();
@@ -29,27 +25,6 @@ class catagory extends Dbh
             );
         }
         return $output;
-
-/*        $stmt = $this->serverConnect()->query($sql);
-
-        if ($stmt->num_rows > 0) {
-            while($row = $stmt->fetch_assoc()) {
-                $output[] = array(
-                    'id' => $row["id"],
-                    'name' => $row["name"]
-                );
-            }
-        }else {
-            $output[] = array();
-        }
-*/
-        /*$data = $stmt->fetchAll();
-        foreach($data as $row){
-            $output[] = array(
-                'id' => $row["id"],
-                'name' => $row["name"]
-            );
-        }*/
     }
     public function queryLeaf($subtitle){
         //table=$title的subtitle_id和table=subtitle的id做join

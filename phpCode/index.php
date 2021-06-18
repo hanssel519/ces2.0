@@ -19,19 +19,32 @@
   -->
     <link rel="stylesheet" href="/CEStable/resources/css/main.css">
 
-
     <title>Home Page</title>
   </head>
   <body>
 
 <script>
-function projectNameErr() {
+function projectNameErrFormat() {
     swal({
-      title: '名稱錯誤 誤加分號,單雙引號!',
-      //text: '誤加分號,單雙引號',
-      //timer: 3000,
+      title: '名稱錯誤 !',
+      text: '勿加 分號 及 單雙引號',
       button: true,
       icon: 'error'
+    });
+}
+function projectNameErrExists() {
+    swal({
+      title: '專案名稱已存在!',
+      text: '專案名稱勿重複',
+      button: true,
+      icon: 'error'
+    });
+}
+function projectCreate() {
+    swal({
+      title: '專案新增成功!',
+      button: true,
+      icon: 'success'
     });
 }
 </script>
@@ -40,7 +53,15 @@ function projectNameErr() {
 ?>
 <?php
 if (isset($_GET['err'])) {
-    echo "<script>projectNameErr();</script>";
+    if (!strcmp($_GET['err'], "projectNameFormat")) {
+        echo "<script>projectNameErrFormat();</script>";
+    }elseif (!strcmp($_GET['err'], "projectNameExists")){
+        echo "<script>projectNameErrExists();</script>";
+    }
+}elseif (isset($_GET['success'])) {
+    if (!strcmp($_GET['success'], "createProject")) {
+        echo "<script>projectCreate();</script>";
+    }
 }
 ?>
 <!--modal for component copy-->
@@ -54,13 +75,11 @@ if (isset($_GET['err'])) {
 
           <form id="copy_form" action="projects/action/copyProject.php" method="POST">
             <div class="modal-body">
-              ...
               <p id="id_name"></p>
                 <div class="mb-3">
                   <label for="inputName" class="form-label">project name</label>
                   <input type="text" class="form-control" name="projectName" id="inputName" placeholder="Enter your project name">
                 </div>
-              ...
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -82,12 +101,10 @@ if (isset($_GET['err'])) {
 
       <form action="projects/action/createNewProject.php" method="POST">
         <div class="modal-body">
-          ...
             <div class="mb-3">
               <label for="inputName" class="form-label">project name</label>
-              <input type="text" class="form-control" name="projectName" id="inputName">
+              <input type="text" class="form-control" name="projectName" id="inputName" placeholder="enter new project name">
             </div>
-          ...
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -111,28 +128,6 @@ if (isset($_GET['err'])) {
       <a type="button" id="sweetalert" class="btn btn-outline-dark">Dark</a>
     </div>
 
-<!--    <div class="container m-md-2 pt-md-3">
-      <h1>list the projects you got now</h1>
-      <span>if it's empty show no projects</span>
-      <hr>
-      <div class="list-group list-group-flush">
-
-        <?php
-        // $project = new Project();
-        // $list = $project->showAllProjects();
-        // foreach ($list as $key => $value) {
-        //     foreach ($value as $key => $name) {
-        //         $url = "projects/individualMainPage.php?projectName=".urlencode($name);
-                ?>
-                <a href=<?php //echo $url; ?> class="list-group-item list-group-item-action list-group-item-light"><?php //echo $name; ?></a>
-                <?php
-            //}
-        //}
-        ?>
-
-      </div>
-
-    </div>-->
 
     <div class="list-group list-group-flush">
         <div class="list-group-item">
@@ -150,7 +145,6 @@ if (isset($_GET['err'])) {
         </div>
           <!--list all the components-->
           <?php
-
 
           $project = new Project();
           $items = $project->showAllProjects();
@@ -248,20 +242,7 @@ if (isset($_GET['err'])) {
               button: true
             });
         };
-        function confirmTest() {
-            Swal.fire({
-                title: "操作確認",
-                text: "請點選你想按的按鈕",
-                showCancelButton: true
-            }).then(function(result) {
-               if (result.value) {
-                    Swal.fire("您按了OK");
-               }
-               else {
-                   Swal.fire("您選擇了Cancel");
-               }
-            });
-        }
+
     </script>
   </body>
 </html>

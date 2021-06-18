@@ -17,19 +17,38 @@
   require('../../../includes/template/header.php');
 ?>
 
-
-
-<?php print_r($_COOKIE); ?>
+<?php
+var_dump($_GET);
+echo "<br>";
+var_dump($_POST);
+echo "<br>";
+var_dump($_COOKIE);
+if (!isset($_COOKIE['projectName'])) {
+    header("Location: ../../index.php");
+}elseif (!isset($_GET['componentID'])|| !isset($_GET['action']) || !isset($_GET['componentName'])) {
+    header("Location: ../showComponents.php");
+}elseif (empty($_GET['componentID'])||empty($_GET['componentName'])||empty($_GET['action'])) {
+    header("Location: ../showComponents.php");
+}
+?>
 <!--body contents go here-->
-<div class="container">
-  <div class="wrapper m-md-2 pt-md-3">
 
 <?php
     $components = new Components;
+    $component_serial_num = $components->getSerialNum($_GET['projectName'], $_GET['componentID']);
+    if(isset($_COOKIE['serial_number'])) {
+        unset($_COOKIE['serial_number']);
+    }
+    setcookie('serial_number', $component_serial_num, -1, "/");
     $return = $components->getSelectedBigItem($_GET['projectName'], $_GET['componentID'], $_GET['componentName']);
 
+    echo '<pre>'; print_r($return); echo '</pre>';
+    $user = new Users($_SERVER['PHP_AUTH_USER']);
+    $UserName = $user->getUserName();
+    echo "UserName: ".$UserName."<br>";
+    $department = $user->getUsersDepartment();
+    echo "depar: ".$department."<br>";
 
-    //$return = $components->modifyComponent($_GET['projectName'], $_GET['componentID'], $_POST['componentName']);
     /*
     $return  => Array
     (
@@ -63,16 +82,18 @@
 
     */
 ?>
-
-    <h2 class="text-success">Project Name: <?php echo $return['info']['projectName']; ?></h2>
-        <?php
-          $user = new Users($_SERVER['PHP_AUTH_USER']);
-          //$user->getUserName();
-          $department = $user->getUserName();
-          echo "depar: ".$department."<br>";
-          $department = $user->getUsersDepartment();
-          echo "depar: ".$department."<br>";
-        ?>
+<div class="container">
+  <div class="wrapper m-md-2 pt-md-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName'];?></h2>
+            </div>
+            <div class="col-4">
+                <a href="../showComponents.php" class="btn btn-outline-success float-end">返回show components</a>
+            </div>
+        </div>
+    </div>
     <div class="container py-5" id="hanging-icons">
       <h2 class="pb-2 border-bottom">Select Attributes (<?php echo $return['info']['material']; ?>)</h2>
 
@@ -114,27 +135,18 @@
               }
           }
           ?>
+
           <?php
-          /*
-          Array(
-                [projectName] => 3
-                [componentID] => 2
-                [componentName] => al1
-                [material] => AL
-            )*/
+          //3個 hidden info
           foreach($return['info'] as $key => $value){
               echo '<input type="hidden" name="info['.$key.']" value="'. $value. '">';
           }
           foreach($return['small_item_include'] as $key => $value){
               echo '<input type="hidden" name="small_item_include['.$key.']" value="'. $value. '">';
           }
-
           ?>
           <input type='hidden' name='small_item_for_your_department' value="<?php echo htmlentities(serialize($small_item_for_your_department)); ?>" />
-          <?php
-echo '<pre>'; print_r($return['info']); echo '</pre>';
-echo '<pre>'; print_r($return['small_item_include']); echo '</pre>';
-          ?>
+
           <br>
           <button type="submit" class="btn btn-success">Submit</button>
         </form>

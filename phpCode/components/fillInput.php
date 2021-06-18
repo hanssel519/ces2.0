@@ -13,7 +13,19 @@
   require('../../includes/template/header.php');
 ?>
 <!--body contents go here-->
-<?php print_r($_COOKIE); ?>
+<?php
+
+var_dump($_GET);
+echo "<br>";
+var_dump($_POST);
+echo "<br>";
+var_dump($_COOKIE);
+if (!isset($_COOKIE['projectName'])) {
+    header("Location: ../index.php");
+}elseif (!isset($_COOKIE['material'])) {
+    header("Location: componentsMainPage.php");
+}
+?>
   <div class="container">
     <div class="wrapper m-md-2 p-md-5">
         <div class="row">
@@ -45,7 +57,7 @@
             ?>
             <div class="mb-4">
             <h3><label for="component_name" class="form-label ">component名稱</label></h3>
-            <input type="text" class="form-control mb-4" id="component_name" name = "component_name" autocomplete="off" required placeholder='This input is required'>
+            <input type="text" class="form-control mb-4" id="component_name" name = "component_name" autocomplete="off" required placeholder='This input is required (必填)'>
             <h3><label for="layer" class="form-label">layer</label></h3>
             <textarea type="text" class="form-control mb-4" id="layer" name = "layer"></textarea>
 

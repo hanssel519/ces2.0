@@ -13,18 +13,49 @@
   require('../../../includes/template/header.php');
 ?>
 
-<?php print_r($_COOKIE); ?>
+<?php
+var_dump($_GET);
+echo "<br>";
+var_dump($_POST);
+echo "<br>";
+var_dump($_COOKIE);
+
+//不是從前首頁進入, 可能由url進入
+if (!isset($_COOKIE['projectName'])) {
+    header("Location: ../../index.php");
+}
+else {
+    //check if the project exists
+    $obj = new Project();
+    if (!$obj->checkIfProExist($_COOKIE['projectName'])) {
+        header("Location: ../../index.php");
+    }
+}
+var_dump($_GET);
+echo "<br>";
+var_dump($_POST);
+echo "<br>";
+var_dump($_COOKIE);
+
+$user = new Users($_SERVER['PHP_AUTH_USER']);
+$UserName = $user->getUserName();
+echo "UserName: ".$UserName."<br>";
+$department = $user->getUsersDepartment();
+echo "depar: ".$department."<br>";
+?>
+
   <div class="container">
     <div class="wrapper m-md-2 p-md-5">
-      <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName']; ?></h1>
-          <?php
-            $user = new Users($_SERVER['PHP_AUTH_USER']);
-            //$user->getUserName();
-            $department = $user->getUserName();
-            echo "depar: ".$department."<br>";
-            $department = $user->getUsersDepartment();
-            echo "depar: ".$department."<br>";
-          ?>
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                    <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName'];?></h2>
+                </div>
+                <div class="col-4">
+                    <a href="../showComponents.php" class="btn btn-outline-success float-end">還沒做好</a>
+                </div>
+            </div>
+        </div>
       <div class="container py-5" id="hanging-icons">
         <h2 class="pb-2 border-bottom">Select Attributes (Assembly)</h2>
 

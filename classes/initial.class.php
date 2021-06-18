@@ -7,7 +7,6 @@
 
 class Initial extends Dbh
 {
-    private $catagory = array('A Cover & Bezel 相關', 'LCD_OTHERS', 'C cover & D door 相關', 'Logic Others', 'MB Others');
     private $big = array(
         'Plastic' => array('塑膠', '漆', 'nut', '成型', '熱熔nut', '濺鍍', 'cnc', 'vm', '電鍍', '塗裝', '印刷'),
         'MG' => array('塑膠', '鎂鋁', '漆', '冷鍛', '壓鑄', '埋射', '衝切', '研磨', 'cnc', '皮膜', '塗裝', '加工', '雷雕', '印刷'),
@@ -277,24 +276,17 @@ class Initial extends Dbh
         "INSERT INTO `銅柱` (`銅柱用量`) VALUES ('PC');",
         "INSERT INTO `ED` (`ED載具產出`,`ED時數`) VALUES ('件','小時');"
     );
-    //private $conn = mysql_connect($dbhost, $dbuser, $dbpass);
-    /*private function connect($value=''){
-    $dsn = 'mysql:host=' . $this->host;
-    $pdo = new PDO($dsn, $this->user, $this->pwd);
-    }*/
+
+
     function __construct($dbName){
-    //create database
-        //$dbName = $dbName;
-        echo "<hr>in init construct: ". $dbName;
-        echo "<hr>in init construct: ". json_encode(htmlspecialchars($dbName));
-        echo "<hr>in init construct: ".htmlentities($dbName, ENT_QUOTES, 'UTF-8');
-        //$dbName = "'".$dbName."'";
-        echo "<hr>in init construct: ".$dbName;
+        //create database
+        $pdo = $this->connect($dbName);
         if(! $this->connect($dbName) ){
             die('Could not connect: ' . mysql_error());
         }else {
-
             echo 'Connected successfully<br />';
+            $sql_list = array();
+
             //開小表單 (row1 = table name)
             //                       塑膠 => array
             foreach ($this->small as $key => $value){
@@ -306,8 +298,8 @@ class Initial extends Dbh
                     $str .
                     ",submission_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP".
                     ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4; ";
-
-                $stmt = $this->connect($dbName)->query($sql);
+                array_push($sql_list, $sql);
+                //$stmt = $this->connect($dbName)->query($sql);
             }
             //壓合, 熱熔 id對應
             $sql =" CREATE TABLE `熱熔子件id` (
@@ -318,8 +310,8 @@ class Initial extends Dbh
               `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
               /*FOREIGN KEY (熱熔id) REFERENCES 熱熔 (id)*/
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-            echo "<hr>".$sql;
-            $stmt = $this->connect($dbName)->query($sql);
+            array_push($sql_list, $sql);
+            //$stmt = $this->connect($dbName)->query($sql);
 
             $sql =" CREATE TABLE `壓合子件id` (
               `id` int(10) NOT NULL PRIMARY KEY auto_increment,
@@ -329,8 +321,8 @@ class Initial extends Dbh
               `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
               /*FOREIGN KEY (壓合id) REFERENCES 壓合 (id)*/
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-            echo "<hr>".$sql;
-            $stmt = $this->connect($dbName)->query($sql);
+            array_push($sql_list, $sql);
+            //$stmt = $this->connect($dbName)->query($sql);
 
 
             //開大表單(worksheet = table name)
@@ -347,25 +339,10 @@ class Initial extends Dbh
                     "submission_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, ".
                     "PRIMARY KEY ( id )); ";
                     //.$str1 .
-
-
-                $stmt = $this->connect($dbName)->query($sql);
+                array_push($sql_list, $sql);
+                //$stmt = $this->connect($dbName)->query($sql);
             }
-            //subtitle: id+name
-            /*$sql =" CREATE TABLE `subtitle` (
-              `id` int(10) NOT NULL PRIMARY KEY auto_increment,
-              `name` varchar(50) DEFAULT NULL
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-            $stmt = $this->connect($dbName)->query($sql);*/
 
-            //title: id+subtitle_id
-            /*foreach ($this->catagory as $value) {
-                $sql =" CREATE TABLE `".$value."` (
-                  `id` int(10) NOT NULL PRIMARY KEY auto_increment,
-                  `subtitle_id` int(10) NOT NULL
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-                $stmt = $this->connect($dbName)->query($sql);
-            }*/
             //件值表單 called 'object'
             $sql =" CREATE TABLE `components` (
               `id` int(10) NOT NULL PRIMARY KEY auto_increment,
@@ -376,16 +353,21 @@ class Initial extends Dbh
               `supplier` varchar(50),
               `amount` varchar(20),
               `remark` TEXT DEFAULT NULL,
+              `serial_number` int(10) NOT NULL DEFAULT 0,
               `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-            $stmt = $this->connect($dbName)->query($sql);
+            array_push($sql_list, $sql);
+            //$stmt = $this->connect($dbName)->query($sql);
+
             //create root table
             $sql =" CREATE TABLE `root` (
               `id` int(10) NOT NULL PRIMARY KEY auto_increment,
               `root_name` varchar(50) DEFAULT NULL,
               `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-            $stmt = $this->connect($dbName)->query($sql);
+            array_push($sql_list, $sql);
+            //$stmt = $this->connect($dbName)->query($sql);
+
             //create root_content table
             $sql =" CREATE TABLE `root_content` (
               `id` int(10) NOT NULL PRIMARY KEY auto_increment,
@@ -395,14 +377,18 @@ class Initial extends Dbh
               /*FOREIGN KEY ( root_id) REFERENCES root (id),*/
               `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-            $stmt = $this->connect($dbName)->query($sql);
+            array_push($sql_list, $sql);
+            //$stmt = $this->connect($dbName)->query($sql);
+
             //create branch table
             $sql =" CREATE TABLE `branch` (
               `id` int(10) NOT NULL PRIMARY KEY auto_increment,
               `branch_name` varchar(50) DEFAULT NULL,
               `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-            $stmt = $this->connect($dbName)->query($sql);
+            array_push($sql_list, $sql);
+            //$stmt = $this->connect($dbName)->query($sql);
+
             //create branch_content table
             $sql =" CREATE TABLE `branch_content` (
               `id` int(10) NOT NULL PRIMARY KEY auto_increment,
@@ -413,24 +399,33 @@ class Initial extends Dbh
               FOREIGN KEY (branch_id) REFERENCES branch (id),*/
               `submission_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-            echo "<hr>".$sql;
-            $stmt = $this->connect($dbName)->query($sql);
-            //run $sql_array
-            foreach ($this->sql_array as $key => $value) {
+            array_push($sql_list, $sql);
+            //$stmt = $this->connect($dbName)->query($sql);
+            /*foreach ($this->sql_array as $key => $value) {
                 $stmt = $this->connect($dbName)->query($value);
-            }
-            //subtitle_object: id+subtitle_id+object_id
-            /*$sql =" CREATE TABLE `subtitle_object` (
-              `id` int(10) NOT NULL PRIMARY KEY auto_increment,
-              `subtitle_id` int(10) NOT NULL,
-              `object_id` int(10) NOT NULL,
-              FOREIGN KEY (`subtitle_id`) REFERENCES `subtitle` (id),
-              FOREIGN KEY (`object_id`) REFERENCES `object` (id)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-            $stmt = $this->connect($dbName)->query($sql);*/
-            //還要移入一個紀錄所有案子的表單
-        }
-    //$retval = mysql_query( $sql, $conn );
+            }*/
 
+            //run $sql_list
+            //make sure the sql statements have been push in the correct order
+            try {
+              $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+              $pdo->beginTransaction();
+              //run $sql_list
+              foreach ($sql_list as $key => $value) {
+                  $stmt = $pdo->exec($value);
+              }
+              //run $sql_array
+              foreach ($this->sql_array as $key => $value) {
+                  $stmt = $pdo->exec($value);
+              }
+
+              $pdo->commit();
+
+            } catch (Exception $e) {
+              $pdo->rollBack();
+              echo "Failed: " . $e->getMessage();
+            }
+        }
     }
 }

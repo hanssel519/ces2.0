@@ -6,7 +6,7 @@
 
   ?>
   <script src="/CEStable/library/bootstrap-5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-      <script src="/CEStable/library/jquery/jquery-3.6.0.js"></script>
+  <script src="/CEStable/library/jquery/jquery-3.6.0.js"></script>
   <script src="/CEStable/library/sweetalert/sweetalert.min.js"></script>
   <!--<script src="/CEStable/library/sweetalert/sweetalert2.min.js"></script>
   <link rel="stylesheet" href="/CEStable/library/sweetalert/sweetalert2.min.css">-->
@@ -23,55 +23,35 @@
         echo "<hr>單引: ". strpos($projectName,'\'');
         echo "<hr>雙引: ". strpos($projectName,'\"');
         if((strpos($projectName,';')!==false)||(strpos($projectName,'\'')!==false)||(strpos($projectName,'\"')!==false)){
-            //echo "<script>sweetAlert('Congratulation!', 'You successfully copy paste this code', 'success', 3000, false);</script>";
-            echo "<script>alert('dsfaf');</script>";
-
-    /*echo "<script>Swal.fire({
-        timer: 30000,
-      title: 'Error!',
-      text: 'Do you want to continue',
-      icon: 'error',
-      confirmButtonText: 'Cool'
-    })</script>";*/
-    echo "<script>swal({
-        timer: 20000,
-          title: 'Auto close alert!',
-          text: 'I will close in 2 seconds.',
-          button: false
-        });</script>";
-            echo "<script>window.location.href = '../../index.php?err=projectName'</script>";
+            //sweetalert -- swal加在這邊會快速消失
+            //所以送一個error flag回index.php
+            echo "<script>window.location.href = '../../index.php?err=projectNameFormat'</script>";
             exit();
         }
         $obj = new Project();
         echo "proname: ". $projectName.'<br>';
         $ifExist = $obj->checkIfProExist($projectName);
-        //$sql = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '" . $projectName . "'";
-        //$stmt = $pdo->serverConnect()->query($sql);
 
-        //echo "stmt: ";
-        //var_dump($stmt);
         if ($ifExist){
-          //header("Location:../../index.php");
           echo "<script>alert('database already exists!!')</script>";
-          echo "<script>window.location.href = '../../index.php'</script>";
+          echo "<script>window.location.href = '../../index.php?err=projectNameExists'</script>";
           exit();
         }else {
             //開database:caseName+紀錄在central
             $project = new Project();
-
             $project->newProject($projectName);
             //真的去開db:caseName之下的tables
-            echo "projectName w/o json encode: ".$projectName.'<br>';
-            //$projectName = "'".$projectName."'";
-            echo "projectName with quotation: ".$projectName.'<br>';
+            //echo "projectName w/o json encode: ".$projectName.'<br>';
+            //echo "projectName with quotation: ".$projectName.'<br>';
             $funObj = new Initial($projectName);
-            echo "<script>alert('create successfully!!')</script>";
-            //echo "<script>window.location.href = '../../index.php'</script>";
+
+            echo "<script>window.location.href = '../../index.php?success=createProject'</script>";
             exit();
         }
 
     }else {
       echo "no button";
+      echo "<script>window.location.href = '../../index.php'</script>";
     }
 
 ?>

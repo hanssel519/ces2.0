@@ -22,6 +22,13 @@
           icon: 'success'
         });
     }
+    function multiEdition() {
+        swal({
+          title: '更動無效 (同時更動)!',
+          button: true,
+          icon: 'error'
+        });
+    }
     </script>
 
 <?php
@@ -29,7 +36,37 @@
 ?>
 
 
-<?php print_r($_COOKIE); ?>
+<?php
+var_dump($_GET);
+echo "<br>";
+var_dump($_POST);
+echo "<br>";
+var_dump($_COOKIE);
+if (isset($_COOKIE['projectName'])) {
+    //check if the project exists
+    $obj = new Project();
+    if (!$obj->checkIfProExist($_COOKIE['projectName'])) {
+        header("Location: ../index.php");
+    }
+    if (isset($_COOKIE['material'])) {
+        unset($_COOKIE['material']);
+    }
+    if (isset($_GET['error'])) {
+        if (!strcmp($_GET['error'], 'multiEdition')) {
+            echo "<script>multiEdition();</script>";
+        }
+    }
+}else {
+    header("Location: ../index.php");
+}
+
+var_dump($_GET);
+echo "<br>";
+var_dump($_POST);
+echo "<br>";
+var_dump($_COOKIE);
+
+?>
 
 <?php
 if (isset($_GET['flag'])) {
@@ -49,14 +86,11 @@ if (isset($_GET['flag'])) {
 
           <form id="copy_form" action="singleComponent/action/copy.php?projectName=<?php echo $_COOKIE['projectName']; ?>" method="POST">
             <div class="modal-body">
-              ...
               <p id="id_name"></p>
-              <?php echo "<br>project: ". $_COOKIE['projectName']; ?>
                 <div class="mb-3">
-                  <label for="inputName" class="form-label">component name</label>
-                  <input type="text" class="form-control" name="componentName" id="inputName">
+                  <label for="inputName" class="form-label">enter new component name below</label>
+                  <input type="text" class="form-control" name="componentName" id="inputName" autocomplete="off" required placeholder="enter component name">
                 </div>
-              ...
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -71,7 +105,14 @@ if (isset($_GET['flag'])) {
 <div class="container">
   <div class="wrapper m-md-2 pt-md-3">
 
-    <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName'];?></h1>
+        <div class="row">
+            <div class="col-8">
+                <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName'];?></h2>
+            </div>
+            <div class="col-4">
+                <a href="../projects/individualMainPage.php?projectName=<?php echo $_COOKIE['projectName']; ?>" class="btn btn-outline-success float-end">返回當前project首頁</a>
+            </div>
+        </div>
     <div class="container pt-2">
         <!-- Button trigger modal -->
         <a type="button" class="btn btn-outline-secondary" href="componentsMainPage.php">Continue create components</a>
@@ -105,19 +146,13 @@ if (isset($_GET['flag'])) {
                   <?php
                   $components = new Components();
                   $items = $components->showAllComponents($_COOKIE['projectName']);
-                  //echo '<pre>'; print_r($items); echo '</pre>';
-
-
                   if (! $items) {//no components
                       ?>
                       <p class="pt-5 text-center">尚無資料</p>
                       <?php
                   }
                   foreach ($items as $key => $value) {
-                      //foreach ($value as $column => $data) {
-                          //$url = "projects/individualMainPage.php?projectName=".urlencode();
-                          ?>
-
+                    ?>
                       <div class="list-group-item list-group-item-action list-group-item-light">
                           <div class="container">
                           <div class="row align-items-center">
@@ -137,15 +172,12 @@ if (isset($_GET['flag'])) {
 
                                 <a type="button" href="singleComponent/singleComponentDelete.php?projectName=<?php echo $_COOKIE['projectName'];?>&componentID=<?php echo $value['id'];?>&componentName=<?php echo $value['name']; ?>&action=delete" class="btn btn-secondary" name="button">刪除</a>
 
-
-
                                 <a type="button" id="copy_btn" onclick="copy_onclick('<?php echo $value['id'];?>','<?php echo $value['name'];?>')" class="btn btn-secondary" name="button">複製</a>
                             </div>
                           </div>
                         </div>
                     </div>
-                          <?php
-                      //}
+                    <?php
                   }
                   ?>
             </div>
@@ -165,7 +197,7 @@ if (isset($_GET['flag'])) {
 
     <script type="text/javascript">
         function copy_onclick(component_id, component_name) {
-            document.getElementById('id_name').innerHTML = "name: "+component_name;
+            document.getElementById('id_name').innerHTML = "copy from component : "+component_name;
             var formAction = $('#copy_form').attr('action');
             var url = "&componentID="+component_id;
             $('#copy_form').attr('action', formAction + url);

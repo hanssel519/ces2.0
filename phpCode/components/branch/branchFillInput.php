@@ -14,10 +14,37 @@
   require('../../../includes/template/header.php');
 ?>
 <!--body contents go here-->
-<?php print_r($_COOKIE); ?>
+<?php
+var_dump($_GET);
+echo "<br>";
+var_dump($_POST);
+echo "<br>";
+var_dump($_COOKIE);
+
+//不是從前首頁進入, 可能由url進入
+if (!isset($_COOKIE['projectName'])) {
+    header("Location: ../../index.php");
+}
+else {
+    //check if the project exists
+    $obj = new Project();
+    if (!$obj->checkIfProExist($_COOKIE['projectName'])) {
+        header("Location: ../../index.php");
+    }elseif (!isset($_POST['selection']) || empty($_POST['selection'])) {
+        header("Location: branchSelection.php");
+    }
+}
+?>
   <div class="container">
     <div class="wrapper m-md-2 p-md-5">
-      <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName']; ?></h1>
+        <div class="row">
+            <div class="col-8">
+                <h2 class="text-success">Project Name: <?php echo $_COOKIE['projectName'];?></h2>
+            </div>
+            <div class="col-4">
+                <a href="../projects/individualMainPage.php?projectName=<?php echo $_COOKIE['projectName']; ?>" class="btn btn-outline-success float-end">假的</a>
+            </div>
+        </div>
 
       <div class="container py-5" id="hanging-icons">
         <h2 class="pb-2 border-bottom">Fill the Blanks (Assembly)</h2>
@@ -33,19 +60,18 @@
             $items = $minorElement->queryShow($_COOKIE['projectName'], $selections);
 
             echo '<pre>'; print_r($items); echo '</pre>';
-            /*
-            $keys = array_keys($items);
-            echo '<pre>'; print_r($keys); echo '</pre>';*/
+
             ?>
             <div class="mb-4">
-            <h3><label for="component_name" class="form-label">組合件名稱</label></h3>
-            <input type="text" class="form-control" id="component_name" name = "component_name">
-            <h3><label for="layer" class="form-label">layer</label></h3>
-            <input type="text" class="form-control" id="layer" name = "layer">
-            <h3><label for="supplier" class="form-label">供應商</label></h3>
-            <input type="text" class="form-control" id="supplier" name = "supplier">
-            <h3><label for="amount" class="form-label">數量</label></h3>
-            <input type="text" class="form-control" id="amount" name = "amount">
+                <h3><label for="component_name" class="form-label">組合件名稱</label></h3>
+                <input type="text" class="form-control mb-4" id="component_name" name = "component_name" autocomplete="off" placeholder='This input is required (必填)' required>
+                <h3><label for="layer" class="form-label">layer</label></h3>
+                <textarea type="text" class="form-control mb-4" id="layer" name = "layer"></textarea>
+
+                <h3><label for="supplier" class="form-label">供應商</label></h3>
+                <textarea type="text" class="form-control mb-4" id="supplier" name = "supplier"></textarea>
+                <h3><label for="amount" class="form-label">數量</label></h3>
+                <textarea type="text" class="form-control" id="amount" name = "amount"></textarea>
             </div>
 
           <?php foreach ($items as $item => $detail): ?>
@@ -69,7 +95,7 @@
                 }elseif(strcmp($key, 'submission_date')){ ?>
                     <div class="mb-4">
                       <label for=<?php echo $key; ?> class="form-label"><?php ECHO $key.$value ?></label>
-                      <input type="text" class="form-control" id=<?php echo $key; ?> name = <?php echo $key; ?>>
+                      <textarea type="text" class="form-control mb-4" id=<?php echo $key; ?> name = <?php echo $key; ?>></textarea>
                     </div>
                 <?php } ?>
 
@@ -79,7 +105,7 @@
 
           <div class="mb-4">
           <h3><label for="remark" class="form-label">備註</label></h3>
-          <input type="text" class="form-control" id="remark" name = "remark">
+          <textarea type="text" class="form-control" id="remark" name = "remark"></textarea>
           </div>
 
           <!--pass $items with hidden-->

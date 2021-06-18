@@ -35,53 +35,31 @@ class Components extends Dbh
         if(! $this->serverConnect() ){
             die('Could not connect: ' . mysql_error());
         }else {
+            //equals to table name
+            $tmp = array();
+            $total = array();
+            $sql = "SELECT * FROM `components`;";
+            $stmt = $this->connect($projectName)->query($sql);
 
-                //equals to table name
-                $tmp = array();
-                $total = array();
-                $sql = "SELECT * FROM `components`;";
-                $stmt = $this->connect($projectName)->query($sql);
-
-                /*$FLAG = 1;//紀錄到底了沒
-                $exists = 0;//紀錄有無 components
-                while ($FLAG) {
-                    if ($row = $stmt->fetch()) {
-                        $exists = 1;
-                        $tmp['name'] = $row['name'];
-                        $tmp['material'] = $row['material'];
-                        $tmp['remark'] = $row['remark'];
-                        $tmp['submission_date'] = $row['submission_date'];
-                        array_push($total, $tmp);
-                    }else {//fetch不到就跳出去
-                        $FLAG = 0;
-                    }
-                }
-                if (!$exists) {//沒有componemts
-                    echo "尚無components";
-                    return;
-                }else {
-
-                }
-                return $total;*/
-
-                while ($row = $stmt->fetch()){//THEOMETRICALLY only one match
-                    $tmp['id'] = $row['id'];
-                    $tmp['name'] = $row['name'];
-                    $tmp['material'] = $row['material'];
-                    $tmp['remark'] = $row['remark'];
-                    $tmp['submission_date'] = $row['submission_date'];
-                    array_push($total, $tmp);
-                    //echo $row['name']." ". $row['material']." ".$row['remark']." ".$row['submission_date']."<hr>";
-                }
-                return $total;
+            while ($row = $stmt->fetch()){//THEOMETRICALLY only one match
+                $tmp['id'] = $row['id'];
+                $tmp['name'] = $row['name'];
+                $tmp['material'] = $row['material'];
+                $tmp['remark'] = $row['remark'];
+                $tmp['submission_date'] = $row['submission_date'];
+                array_push($total, $tmp);
+            }
+            return $total;
         }
     }
 
     //copy component
     public function copyComponent($projectName, $componentID, $componentName){
+        $pdo = $this->connect($projectName);
         if(! $this->serverConnect() ){
             die('Could not connect: ' . mysql_error());
         }else {
+            $sql_list = array();
             //`id`, `name`, `material`, `material_id`, `layer`, `remark`, `submission_date`
             //用$componentID抓 component的材料跟材料id====================
             $sql = "SELECT material, material_id FROM `components` WHERE id = ".$componentID.";";
@@ -94,8 +72,7 @@ class Components extends Dbh
             //對材料(plastic, al...)找 small_item的id====================
             //"SELECT 塑膠, 鋁, 鋁擠, 髮絲, 衝壓... FROM `AL` WHERE id = 2"
             $sql = "SELECT ".$small_items." FROM `".$material['material']."` WHERE id = ".$material['material_id'];
-            echo "<br>";
-            var_dump($sql);
+
             $small_item_withID = $this->connect($projectName)->query($sql)->fetch();
             /*$small_item
             (
@@ -115,7 +92,7 @@ class Components extends Dbh
                     $sql = "SHOW COLUMNS FROM `".$small_item_name."`;";
                     $column_name = $this->connect($projectName)->query($sql)->fetchAll();
                     echo "<br><br>columns: ". $small_item_name .$small_item_id;
-                    //echo '<pre>'; print_r($column_name); echo '</pre>';
+
                     /*
                     column_name:
                     Array
@@ -156,6 +133,7 @@ class Components extends Dbh
                     //建立新的 $small_item 資料, ex:塑膠: 塑料名稱1, 重量1, 塑料名稱2... ====================
                     $sql = "INSERT INTO `".$small_item_name."` (". $small_item_columns .") SELECT ".$small_item_columns ." FROM `".$small_item_name ."` WHERE id = ".$small_item_id .";";
                     var_dump($sql);
+                    //array_push($sql_list, $sql);
                     $column_name = $this->connect($projectName)->query($sql);
                     //get return 新建立的 $small_item(塑膠) 的id for dig_item(Plastic)
                     $sql = "SELECT id FROM `".$small_item_name."`ORDER BY id DESC LIMIT 1;";
@@ -177,17 +155,14 @@ class Components extends Dbh
             echo '<pre>$ids: '; print_r($ids); echo '</pre>';
             //把$small_item(塑膠)的新id填進big_item(plastic)
             $sql = "INSERT INTO ".$material['material']." (".$items.") VALUES (".$ids.")";
+            //array_push($sql_list, $sql);
             $this->connect($projectName)->query($sql);
 
             //insert to `component`====================
             //複製component的部分值
             $sql = "INSERT INTO `components` (`material`, `layer`, `supplier`, `amount`, `remark`) SELECT material, layer, supplier, amount, remark FROM `components` WHERE id=".$componentID.";";
-
+            //array_push($sql_list, $sql);
             $stmt = $this->connect($projectName)->query($sql);
-            echo "<hr>複製component的部分值";
-            var_dump($sql);
-            echo "<hr>複製component的部分值";
-            var_dump($stmt);
             //抓出component對應的material的最後一筆id
             $sql = "SELECT id FROM `".$material['material']."` ORDER BY id DESC LIMIT 1;";
             $id = $this->connect($projectName)->query($sql)->fetch();
@@ -198,13 +173,12 @@ class Components extends Dbh
             $component_lastid = $id['id'];
             //把最後一筆 material_id 補進 component的最後一筆
             $sql = "UPDATE `components` SET material_id = ".$material_id.", name = '".$componentName."' WHERE id = ".$component_lastid.";";
+            //array_push($sql_list, $sql);
             $stmt = $this->connect($projectName)->query($sql);
             echo "<hr>把最後一筆 material_id 補進 component的最後一筆";
             var_dump($sql);
-            echo "<hr>把最後一筆 material_id 補進 component的最後一筆";
-            var_dump($stmt);
-            return;
-            //header('Location:../phpCode/components/showComponents.php');
+
+            //return;
         }
     }
     //check component
@@ -215,12 +189,10 @@ class Components extends Dbh
             //`id`, `name`, `material`, `material_id`, `layer`, `remark`, `submission_date`
             $total_item = array();
             $sql = "SELECT layer, supplier, amount, remark FROM `components` WHERE id = ".$componentID.";";
-
             $details = $this->connect($projectName)->query($sql)->fetch();
 
             $total_item['info'] = $details;
             //檢查一下data passing gkosdjkdnv
-
             //用$componentID抓 component的材料跟材料id====================
             $sql = "SELECT material, material_id FROM `components` WHERE id = $componentID";
             $material = $this->connect($projectName)->query($sql)->fetch();
@@ -385,13 +357,12 @@ class Components extends Dbh
         }else {
             //`id`, `name`, `material`, `material_id`, `layer`, `remark`, `submission_date`
 
-
             $sql = "UPDATE components SET `name` = ?, `layer` = ?, `supplier` = ?, `amount` = ?, `remark` = ? WHERE id = ".$obj['componentID'].";";
             $sth = $this->connect($obj['info']['projectName'])->prepare($sql);
             $sth->execute(array($obj['component_name'], $obj['layer'], $obj['supplier'], $obj['amount'], $obj['remark']));
 
             echo "<hr>update component: ".$sql;
-            
+
             //用$componentID抓 component的材料跟材料id====================
             $sql = "SELECT material, material_id FROM `components` WHERE id = ".$obj['componentID'].";";
             $material = $this->connect($obj['info']['projectName'])->query($sql)->fetch();
@@ -440,6 +411,7 @@ class Components extends Dbh
 
                             $sql = "INSERT INTO `".$small_item."` (". $string . ") VALUES (". $string1 .");";
                             $stmt =  $this->connect($obj['info']['projectName'])->prepare($sql);
+                            //array_push($sql_list, $sql);
                             $stmt->execute($new_data);
                             //echo '<pre>'; print_r($new_data); echo '</pre>';
 
@@ -491,8 +463,8 @@ class Components extends Dbh
                 $small_items = $this->connect($obj['info']['projectName'])->query($sql)->fetch();
                 header('Location:../../showComponents.php');
             }
+        return true;
         }
-
     }
 
 
@@ -534,6 +506,27 @@ class Components extends Dbh
         }
     }
 
+    public function getSerialNum($projectName, $componentid)
+    {
+        if(! $this->serverConnect() ){
+            die('Could not connect: ' . mysql_error());
+        }else {
+            $sql = "SELECT serial_number FROM `components` WHERE id = ".$componentid.";";
+            $return = $this->connect($projectName)->query($sql)->fetch();
+            return $return['serial_number'];
+        }
+    }
+    public function setSerialNum($projectName, $componentid)
+    {
+        if(! $this->serverConnect() ){
+            die('Could not connect: ' . mysql_error());
+        }else {
+            $sql = "UPDATE components SET `serial_number` = ? WHERE id = ".$componentid.";";
+            $sth = $this->connect($projectName)->prepare($sql);
+            $component_serial_num = $this->getSerialNum($projectName, $componentid);
+            $sth->execute(array($component_serial_num+1));
+        }
+    }
     //個別component修改 redundant
     public function singleComponent($projectName, $componentid, $action){
         switch ($action) {

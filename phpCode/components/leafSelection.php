@@ -12,20 +12,41 @@
 <?php
   require('../../includes/template/header.php');
 ?>
-<!--body contents go here-->
 <?php
-    if (isset($_GET['material'])) {
-    if(isset($_COOKIE['material'])) {
-            unset($_COOKIE['material']);
-        }
-        setcookie('material', $_GET['material'], -1, "/");
 
-    }else {//從下一頁 按上一頁return page的
-        //do nothing to keep cookie
-        header("Location: /componentsMainPage.php");
+var_dump($_GET);
+echo "<br>";
+var_dump($_POST);
+echo "<br>";
+var_dump($_COOKIE);
+
+//不是從前首頁進入, 可能由url進入
+if (!isset($_COOKIE['projectName'])) {
+    header("Location: ../index.php");
+}
+else {
+    //check if the project exists
+    $obj = new Project();
+    if (!$obj->checkIfProExist($_COOKIE['projectName'])) {
+        header("Location: ../index.php");
     }
+    if (!isset($_GET['material'])) {
+        header("Location: componentsMainPage.php");
+    } else {
+        echo "string";
+        $obj = new Material();
+        if (!$obj->checkIfValid($_GET['material'])) {
+            header("Location: componentsMainPage.php");
+        }else {
+            if(isset($_COOKIE['material'])) {
+                unset($_COOKIE['material']);
+            }
+            setcookie('material', $_GET['material'], -1, "/");
+        }
+    }
+}
 ?>
-<?php print_r($_COOKIE); ?>
+
   <div class="container">
     <div class="wrapper m-md-2 p-md-5">
         <div class="row">
@@ -38,9 +59,8 @@
         </div>
           <?php
             $user = new Users($_SERVER['PHP_AUTH_USER']);
-            //$user->getUserName();
-            $department = $user->getUserName();
-            echo "depar: ".$department."<br>";
+            $UserName = $user->getUserName();
+            echo "UserName: ".$UserName."<br>";
             $department = $user->getUsersDepartment();
             echo "depar: ".$department."<br>";
           ?>

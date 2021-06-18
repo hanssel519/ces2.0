@@ -21,8 +21,25 @@
   require('../../../includes/template/header.php');
 ?>
 <?php
-    print_r($_COOKIE);
-    echo $_COOKIE["projectName"];
+
+var_dump($_GET);
+echo "<br>";
+var_dump($_POST);
+echo "<br>";
+var_dump($_COOKIE);
+
+//不是從前首頁進入, 可能由url進入
+if (!isset($_COOKIE['projectName'])) {
+    header("Location: ../../index.php");
+}
+else {
+    //check if the project exists
+    $obj = new Project();
+    if (!$obj->checkIfProExist($_COOKIE['projectName'])) {
+        header("Location: ../../index.php");
+    }
+}
+
 ?>
 <!--body contents go here-->
 <div class="container">
