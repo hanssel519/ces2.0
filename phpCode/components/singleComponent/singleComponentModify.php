@@ -35,6 +35,9 @@ if (!isset($_COOKIE['projectName'])) {
 
 <?php
     $components = new Components;
+    if(!$components->checkIfExist($_GET['projectName'], $_GET['componentID'])){
+      header("Location: ../showComponents.php?error=deleted");
+    }
     $component_serial_num = $components->getSerialNum($_GET['projectName'], $_GET['componentID']);
     if(isset($_COOKIE['serial_number'])) {
         unset($_COOKIE['serial_number']);
@@ -96,7 +99,6 @@ if (!isset($_COOKIE['projectName'])) {
     </div>
     <div class="container py-5" id="hanging-icons">
       <h2 class="pb-2 border-bottom">Select Attributes (<?php echo $return['info']['material']; ?>)</h2>
-
       <?php
         $items = array(
             'Plastic' => array('塑膠'=>'me', '漆'=>'id', 'nut'=>'me', '成型'=>'me', '熱熔nut'=>'me', '濺鍍'=>'me', 'cnc'=>'me', 'vm'=>'id', '電鍍'=>'id', '塗裝'=>'id', '印刷'=>'id'),

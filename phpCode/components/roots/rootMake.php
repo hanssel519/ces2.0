@@ -123,7 +123,7 @@ else {
 
   </div>
 </div>
-
+</div>
 <?php
   include_once('../../../includes/template/footer.html');
 ?>

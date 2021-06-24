@@ -30,6 +30,19 @@ class Components extends Dbh
     {
         // code...
     }
+    public function checkIfExist($projectName, $componentID){
+      if(! $this->serverConnect() ){
+          die('Could not connect: ' . mysql_error());
+      }else {
+          //$sql = "SELECT * FROM `components` WHERE id = $componentID;";
+          //$stmt = $this->connect($projectName)->query($sql);
+
+          $sql = "SELECT COUNT(*) FROM `components` WHERE id = $componentID;";
+          $stmt = $this->connect($projectName)->query($sql);
+          $row = $stmt->fetch();
+          return $row['COUNT(*)'];
+      }
+    }
     //showComponents.php 列出所有components
     public function showAllComponents($projectName=''){
         if(! $this->serverConnect() ){

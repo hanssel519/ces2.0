@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <link rel="icon" href="/CEStable/assets/icons.png" />
+    <link rel="icon" href="/CEStable/assets/icon1.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script src="/CEStable/library/jquery/jquery-3.6.0.js"></script>

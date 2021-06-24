@@ -33,6 +33,10 @@ if (!isset($_COOKIE['projectName'])) {
 }elseif (!isset($_POST['selection']) || !isset($_POST['info'])|| !isset($_POST['small_item_include'])|| !isset($_POST['small_item_for_your_department'])) {
     header("Location: ../../showComponents.php");
 }
+$components = new Components();
+if(!$components->checkIfExist($_COOKIE['projectName'],  $_POST['info']['componentID'])){
+  header("Location: ../../showComponents.php?error=deleted");
+}
 ?>
 
   <div class="container">

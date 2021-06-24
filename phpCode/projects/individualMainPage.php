@@ -109,7 +109,7 @@ if (!$obj->checkIfProExist($_GET['projectName'])) {
             </div>
             <div>
               <a href="../components/root/rootMakeNodes.php" class="btn button2">
-                make root nodes <br>
+                舊的不要用!!! <br>
                 製作根節點元件(old)
               </a>
             </div>
@@ -121,7 +121,7 @@ if (!$obj->checkIfProExist($_GET['projectName'])) {
             <div>
               <!--<p>新的.</p>-->
               <a href="../components/roots/rootMake.php" class="btn btn-secondary">
-                check root nodes <br>
+                可以用!!! <br>
                 製作根節點元件(new)
               </a>
             </div>
@@ -174,7 +174,7 @@ if (!$obj->checkIfProExist($_GET['projectName'])) {
             </div>
             <div>
               <a href="#" class="btn button2">
-                check tree <br>
+                check tree(還沒好不要用!!!~~) <br>
                 查看樹狀結構
               </a>
             </div>

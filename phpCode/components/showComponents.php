@@ -29,6 +29,13 @@
           icon: 'error'
         });
     }
+    function deleted() {
+        swal({
+          title: '有人刪除了你正在更動的資料',
+          button: true,
+          icon: 'error'
+        });
+    }
     </script>
 
 <?php
@@ -54,6 +61,8 @@ if (isset($_COOKIE['projectName'])) {
     if (isset($_GET['error'])) {
         if (!strcmp($_GET['error'], 'multiEdition')) {
             echo "<script>multiEdition();</script>";
+        }elseif(!strcmp($_GET['error'], 'deleted')){
+          echo "<script>deleted();</script>";
         }
     }
 }else {

@@ -18,6 +18,9 @@ $_POST['small_item_for_your_department'] = unserialize($_POST['small_item_for_yo
 echo '<pre>'; print_r($_POST); echo '</pre>';
 
 $obj = new Components();
+if(!$obj->checkIfExist($_POST['info']['projectName'],  $_POST['info']['componentID'])){
+  header("Location: ../showComponents.php?error=deleted");
+}
 $component_serial_num = $obj->getSerialNum($_POST['info']['projectName'], $_POST['info']['componentID']);
 //compare db: serial_number with cookie:serial_number
 if ($component_serial_num !== $_COOKIE['serial_number']) {
