@@ -14,3 +14,6 @@
 2021/06/18
 	check post/get in url
 	set serial number in `components` to avoid multi edition simultaneously.
+2021/06/24
+	add icon picture to assets,
+	modify branch/subfiles/html
