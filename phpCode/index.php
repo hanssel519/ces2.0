@@ -59,11 +59,11 @@ function call_delete(project_id, project_name){
      },
      success: function (response) {
        location.reload();
-       swal('delete 成功!!!!', 'success');
+       //swal('delete 成功!!!!', 'success');
      },
      error: function(err) {
          console.log(err);
-         swal('delete 不成功!!!!', 'error');
+         //swal('delete 不成功!!!!', 'error');
     }
  });
 }
@@ -164,7 +164,7 @@ if (isset($_GET['err'])) {
   </div>
 </div>
 
-<?php print_r($_COOKIE); ?>
+
 <!--body contents go here-->
 <div class="container">
   <div class="wrapper m-md-2 pt-md-3">

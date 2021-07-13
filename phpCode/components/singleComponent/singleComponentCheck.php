@@ -18,11 +18,11 @@ require($_SERVER['DOCUMENT_ROOT']."/CEStable/includes/importLibraries.inc.php");
 
 
 <?php
-var_dump($_GET);
+/*var_dump($_GET);
 echo "<br>";
 var_dump($_POST);
 echo "<br>";
-var_dump($_COOKIE);
+var_dump($_COOKIE);*/
 /*
 //$_GET
 array(4) { ["projectName"]=> string(2) "" ["componentID"]=> string(1) "1" ["componentName"]=> string(0) "" ["action"]=> string(5) "check" }
@@ -44,7 +44,7 @@ if (!isset($_COOKIE['projectName'])) {
 <?php
 $component = new Components();
 $component_detail = $component->checkComponent($_GET['projectName'], $_GET['componentID']);
-var_dump($component_detail);
+//var_dump($component_detail);
 ?>
 
 <div class="container">
@@ -81,10 +81,10 @@ var_dump($component_detail);
           ?>
 
         <?php foreach ($component_detail as $small_item => $value): ?>
-            <h3><?php echo $small_item; ?></h3>
+            <h2 class="fw-bolder"><?php echo $small_item; ?></h2>
             <hr>
             <div class="table-responsive">
-                <table class="table  table-hover">
+                <table class="table table-hover">
                     <colgroup>
                        <col span="1" style="width: 40%;">
                        <col span="1" style="width: 60%;">
@@ -93,8 +93,8 @@ var_dump($component_detail);
                     <tbody>
                         <?php foreach ($value as $small_item_name => $small_item_data): ?>
                         <tr>
-                            <td><?php echo $small_item_name?></td>
-                            <td><?php echo nl2br(htmlspecialchars($small_item_data));?></td>
+                            <td class="fs-5"><?php echo $small_item_name?></td>
+                            <td class="fs-5 fw-lighter"><?php echo nl2br(htmlspecialchars($small_item_data));?></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

@@ -15,11 +15,11 @@
 <!--body contents go here-->
 <?php
 
-var_dump($_GET);
+/*var_dump($_GET);
 echo "<br>";
 var_dump($_POST);
 echo "<br>";
-var_dump($_COOKIE);
+var_dump($_COOKIE);*/
 if (!isset($_COOKIE['projectName'])) {
     header("Location: ../index.php");
 }elseif (!isset($_COOKIE['material'])) {
@@ -38,7 +38,7 @@ if (!isset($_COOKIE['projectName'])) {
         </div>
 
       <div class="container py-5" id="hanging-icons">
-        <h2 class="pb-2 border-bottom">Fill the Blanks (<?php echo $_COOKIE['material']; ?>)</h2>
+        <h2 class="pb-2 d-flex justify-content-end border-bottom">Fill the Blanks (<?php echo $_COOKIE['material']; ?>)</h2>
         <!--need to pass $_COOKIE['material']+$items-->
         <form class="form-validation" action="action/fillInputAction.php" method="POST">
             <?php
@@ -50,7 +50,7 @@ if (!isset($_COOKIE['projectName'])) {
             $minorElement = new MinorElement();
             $items = $minorElement->queryShow($_COOKIE['projectName'], $selections);
 
-            echo '<pre>'; print_r($items); echo '</pre>';
+            //echo '<pre>'; print_r($items); echo '</pre>';
             /*
             $keys = array_keys($items);
             echo '<pre>'; print_r($keys); echo '</pre>';*/

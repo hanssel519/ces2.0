@@ -18,11 +18,11 @@
 ?>
 
 <?php
-var_dump($_GET);
+/*var_dump($_GET);
 echo "<br>";
 var_dump($_POST);
 echo "<br>";
-var_dump($_COOKIE);
+var_dump($_COOKIE);*/
 if (!isset($_COOKIE['projectName'])) {
     header("Location: ../../index.php");
 }elseif (!isset($_GET['componentID'])|| !isset($_GET['action']) || !isset($_GET['componentName'])) {
@@ -45,12 +45,12 @@ if (!isset($_COOKIE['projectName'])) {
     setcookie('serial_number', $component_serial_num, -1, "/");
     $return = $components->getSelectedBigItem($_GET['projectName'], $_GET['componentID'], $_GET['componentName']);
 
-    echo '<pre>'; print_r($return); echo '</pre>';
+    //echo '<pre>'; print_r($return); echo '</pre>';
     $user = new Users($_SERVER['PHP_AUTH_USER']);
     $UserName = $user->getUserName();
-    echo "UserName: ".$UserName."<br>";
+    //echo "UserName: ".$UserName."<br>";
     $department = $user->getUsersDepartment();
-    echo "depar: ".$department."<br>";
+    //echo "depar: ".$department."<br>";
 
     /*
     $return  => Array

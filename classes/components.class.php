@@ -77,8 +77,8 @@ class Components extends Dbh
             //用$componentID抓 component的材料跟材料id====================
             $sql = "SELECT material, material_id FROM `components` WHERE id = ".$componentID.";";
             $material = $this->connect($projectName)->query($sql)->fetch();
-            echo $material['material'].$material['material_id'];
-            echo '<pre>'; print_r($this->big_item[$material['material']]); echo '</pre>';
+            //echo $material['material'].$material['material_id'];
+            //echo '<pre>'; print_r($this->big_item[$material['material']]); echo '</pre>';
             //big_item=材料的columns, ex: 塑膠, 鋁, 鋁擠, 髮絲, 衝壓...
             $small_items = implode(", ", $this->big_item[$material['material']]);
             echo $small_items;
@@ -94,7 +94,7 @@ class Components extends Dbh
                 [鋁擠] =>
                 [髮絲] =>
             )*/
-            echo '<pre>$small_item_withID'; print_r($small_item_withID); echo '</pre>';
+            //echo '<pre>$small_item_withID'; print_r($small_item_withID); echo '</pre>';
 
             $small_item_newID = array();
             foreach ($small_item_withID as $small_item_name => $small_item_id) {
@@ -104,7 +104,7 @@ class Components extends Dbh
                     //對 $small_item找columns
                     $sql = "SHOW COLUMNS FROM `".$small_item_name."`;";
                     $column_name = $this->connect($projectName)->query($sql)->fetchAll();
-                    echo "<br><br>columns: ". $small_item_name .$small_item_id;
+                    //echo "<br><br>columns: ". $small_item_name .$small_item_id;
 
                     /*
                     column_name:
@@ -123,7 +123,7 @@ class Components extends Dbh
                     */
                     $tmp = array();
                     foreach ($column_name as $redundant => $value) {//$value['Field']接起來
-                        echo '<pre>'; print_r($value['Field']); echo '</pre>';
+                        //echo '<pre>'; print_r($value['Field']); echo '</pre>';
                         if (strcmp($value['Field'], "id")&&strcmp($value['Field'], "submission_date")!== 0){//收集 小item的column names, except: id+submission_date
                             array_push($tmp, $value['Field']);
                         }
@@ -137,15 +137,15 @@ class Components extends Dbh
                         [3] => 重量2
                     )
                     */
-                    echo '<pre>tmp: '; print_r($tmp); echo '</pre>';
+                    //echo '<pre>tmp: '; print_r($tmp); echo '</pre>';
                     $small_item_columns = implode(", ", $tmp);
-                    echo '<pre>small_item_columns: '; print_r($small_item_columns); echo '</pre>';
+                    //echo '<pre>small_item_columns: '; print_r($small_item_columns); echo '</pre>';
                     //small_item_columns: 塑料名稱1, 重量1, 塑料名稱2, 重量2
-                    echo '<pre>$small_item_name: '; print_r($small_item_name); echo '</pre>';
+                    //echo '<pre>$small_item_name: '; print_r($small_item_name); echo '</pre>';
                     //$small_item_name: 塑膠
                     //建立新的 $small_item 資料, ex:塑膠: 塑料名稱1, 重量1, 塑料名稱2... ====================
                     $sql = "INSERT INTO `".$small_item_name."` (". $small_item_columns .") SELECT ".$small_item_columns ." FROM `".$small_item_name ."` WHERE id = ".$small_item_id .";";
-                    var_dump($sql);
+                    //var_dump($sql);
                     //array_push($sql_list, $sql);
                     $column_name = $this->connect($projectName)->query($sql);
                     //get return 新建立的 $small_item(塑膠) 的id for dig_item(Plastic)
@@ -155,7 +155,7 @@ class Components extends Dbh
                 }
             }
             //新建立的$small_item_newID 分成item名稱+id 兩個array
-            echo '<pre>$small_item_newID: '; print_r($small_item_newID); echo '</pre>';
+            //echo '<pre>$small_item_newID: '; print_r($small_item_newID); echo '</pre>';
             $items = array();
             $ids = array();
             foreach ($small_item_newID as $small_item => $id) {
@@ -164,8 +164,8 @@ class Components extends Dbh
             }
             $items = implode(", ", $items);
             $ids = implode(", ", $ids);
-            echo '<pre>$items: '; print_r($items); echo '</pre>';
-            echo '<pre>$ids: '; print_r($ids); echo '</pre>';
+            //echo '<pre>$items: '; print_r($items); echo '</pre>';
+            //echo '<pre>$ids: '; print_r($ids); echo '</pre>';
             //把$small_item(塑膠)的新id填進big_item(plastic)
             $sql = "INSERT INTO ".$material['material']." (".$items.") VALUES (".$ids.")";
             //array_push($sql_list, $sql);
@@ -317,8 +317,8 @@ class Components extends Dbh
             //對材料(plastic, al...)找 small_item的id====================
             //"SELECT 塑膠, 鋁, 鋁擠, 髮絲, 衝壓... FROM `AL` WHERE id = 2"
             $sql = "SELECT ".$small_items." FROM `".$material['material']."` WHERE id = ".$material['material_id'];
-            echo "<br>";
-            var_dump($sql);
+            //echo "<br>";
+            //var_dump($sql);
             $small_item_withID = $this->connect($projectName)->query($sql)->fetch();
             /*$small_item
             (
@@ -346,7 +346,7 @@ class Components extends Dbh
                     //array_push($tmp['without'][$key],  0);
                 }
             }
-            echo '<pre>'; print_r($tmp); echo '</pre>';
+            //echo '<pre>'; print_r($tmp); echo '</pre>';
             return $tmp;
             /*
             $tmp(
@@ -381,12 +381,12 @@ class Components extends Dbh
             $sth = $this->connect($obj['info']['projectName'])->prepare($sql);
             $sth->execute(array($obj['component_name'], $obj['layer'], $obj['supplier'], $obj['amount'], $obj['remark']));
 
-            echo "<hr>update component: ".$sql;
+            //echo "<hr>update component: ".$sql;
 
             //用$componentID抓 component的材料跟材料id====================
             $sql = "SELECT material, material_id FROM `components` WHERE id = ".$obj['componentID'].";";
             $material = $this->connect($obj['info']['projectName'])->query($sql)->fetch();
-            echo "<hr>material: ".$material['material'].", material_id: ".$material['material_id'];
+            //echo "<hr>material: ".$material['material'].", material_id: ".$material['material_id'];
 
             if ($material) {//刪除小資料 SELECT * FROM `plastic` WHERE id =2
                 $sql = "SELECT * FROM `".$material['material']."` WHERE id = ".$material['material_id'].";";
@@ -516,9 +516,9 @@ class Components extends Dbh
                     //`加工`
                     $sql = "DELETE FROM `".$small_item_name ."` WHERE id = ".$small_item_id.";";
                     //var_dump($small_item_id);
-                    var_dump($sql);
+                    //var_dump($sql);
                     $sql_con = $this->connect($projectName)->query($sql);
-                    var_dump($sql_con);
+                    //var_dump($sql_con);
 
                 }
             }

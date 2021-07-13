@@ -15,12 +15,12 @@
 <!--body contents go here-->
 <?php
 
-echo 'GET<pre>'; print_r($_GET); echo '</pre>';
+/*echo 'GET<pre>'; print_r($_GET); echo '</pre>';
 echo "<br>";
 echo 'POST<pre>'; print_r($_POST); echo '</pre>';
 echo "<br>";
 echo 'COOKIE<pre>'; print_r($_COOKIE); echo '</pre>';
-echo "<hr>";
+echo "<hr>";*/
 /*echo "<br>";
 echo '<pre>'; print_r(unserialize($_POST['small_item_for_your_department'])); echo '</pre>';
 echo "<br>";
@@ -91,26 +91,27 @@ if(!$components->checkIfExist($_COOKIE['projectName'],  $_POST['info']['componen
             <?php
             $name = $minorElement->placeholder($_POST['info']['projectName'], 'components', $_POST['info']['componentID'], 'name');
             ?>
-            <h3><label for="component_name" class="form-label">component名稱</label></h3>
+            <h3><label for="component_name" class="form-label mt-4">component名稱</label></h3>
             <input type="text" class="form-control" id="component_name" name = "component_name" value=<?php echo $name;?>>
 
             <?php
             $layer = $minorElement->placeholder($_POST['info']['projectName'], 'components', $_POST['info']['componentID'], 'layer');
 
             ?>
-            <h3><label for="layer" class="form-label">layer</label></h3>
+
+            <h3><label for="layer" class="form-label mt-4">layer</label></h3>
             <textarea class="form-control" id="layer" name = "layer"> <?php echo $layer; ?> </textarea>
 
             <?php
             $supplier = $minorElement->placeholder($_POST['info']['projectName'], 'components', $_POST['info']['componentID'], 'supplier');
             ?>
-            <h3><label for="supplier" class="form-label">供應商</label></h3>
+            <h3><label for="supplier" class="form-label mt-4">供應商</label></h3>
             <textarea type="text" class="form-control" id="supplier" name = "supplier"> <?php echo $supplier; ?></textarea>
             <?php
             $amount = $minorElement->placeholder($_POST['info']['projectName'], 'components', $_POST['info']['componentID'], 'amount');
             ?>
 
-            <h3><label for="amount" class="form-label">數量</label></h3>
+            <h3><label for="amount" class="form-label mt-4">數量</label></h3>
             <textarea type="text" class="form-control" id="amount" name = "amount"> <?php echo $amount; ?></textarea>
 
             </div>
@@ -147,7 +148,7 @@ if(!$components->checkIfExist($_COOKIE['projectName'],  $_POST['info']['componen
           </div>
 
           <!--pass $items with hidden-->
-          <?php echo '<pre>'; print_r($items); echo '</pre>'; ?>
+          <?php //echo '<pre>'; print_r($items); echo '</pre>'; ?>
         <!--
         $items
         (
@@ -187,7 +188,7 @@ if(!$components->checkIfExist($_COOKIE['projectName'],  $_POST['info']['componen
           <input type='hidden' name='componentID' value="<?php echo $_POST['info']['componentID']; ?>" />
 
           <?php
-          echo '<pre>'; print_r($_POST['info']); echo '</pre>';
+          //echo '<pre>'; print_r($_POST['info']); echo '</pre>';
           foreach($_POST['info'] as $key => $value){
               echo '<input type="hidden" name="info['.$key.']" value="'. $value. '">';
           }

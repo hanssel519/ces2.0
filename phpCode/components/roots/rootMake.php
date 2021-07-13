@@ -21,12 +21,12 @@
   require('../../../includes/template/header.php');
 ?>
 <?php
-
+/*
 var_dump($_GET);
 echo "<br>";
 var_dump($_POST);
 echo "<br>";
-var_dump($_COOKIE);
+var_dump($_COOKIE);*/
 
 //不是從前首頁進入, 可能由url進入
 if (!isset($_COOKIE['projectName'])) {

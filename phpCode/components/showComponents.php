@@ -51,11 +51,11 @@
 
 
 <?php
-var_dump($_GET);
+/*var_dump($_GET);
 echo "<br>";
 var_dump($_POST);
 echo "<br>";
-var_dump($_COOKIE);
+var_dump($_COOKIE);*/
 if (isset($_COOKIE['projectName'])) {
     //check if the project exists
     $obj = new Project();
@@ -78,11 +78,11 @@ if (isset($_COOKIE['projectName'])) {
     header("Location: ../index.php");
 }
 
-var_dump($_GET);
+/*var_dump($_GET);
 echo "<br>";
 var_dump($_POST);
 echo "<br>";
-var_dump($_COOKIE);
+var_dump($_COOKIE);*/
 
 ?>
 
@@ -171,29 +171,29 @@ if (isset($_GET['flag'])) {
                   }
                   foreach ($items as $key => $value) {
                     ?>
-                      <div class="list-group-item list-group-item-action list-group-item-light">
-                          <div class="container">
-                          <div class="row align-items-center">
-                            <div class="col fs-4">
-                                <?php echo $value['name']. ",id: ".$value['id']?>
-                            </div>
-                            <div class="col fs-4">
-                                <?php echo $value['material'] ?>
-                            </div>
-                            <div class="col fs-4">
-                                <?php echo $value['submission_date'] ?>
-                            </div>
-                            <div class="col fs-4">
-                                <a type="button" href="singleComponent/singleComponentCheck.php?projectName=<?php echo $_COOKIE['projectName'];?>&componentID=<?php echo $value['id'];?>&componentName=<?php echo $value['name']; ?>&action=check" class="btn btn-secondary" name="button">查看</a>
-
-                                <a type="button" href="singleComponent/singleComponentModify.php?projectName=<?php echo $_COOKIE['projectName'];?>&componentID=<?php echo $value['id'];?>&componentName=<?php echo $value['name']; ?>&action=modify" class="btn btn-secondary" name="button">修改</a>
-
-                                <a type="button" href="singleComponent/singleComponentDelete.php?projectName=<?php echo $_COOKIE['projectName'];?>&componentID=<?php echo $value['id'];?>&componentName=<?php echo $value['name']; ?>&action=delete" class="btn btn-secondary" name="button">刪除</a>
-
-                                <a type="button" id="copy_btn" onclick="copy_onclick('<?php echo $value['id'];?>','<?php echo $value['name'];?>')" class="btn btn-secondary" name="button">複製</a>
-                            </div>
-                          </div>
+                    <div class="list-group-item list-group-item-action list-group-item-light">
+                
+                      <div class="row align-items-center">
+                        <div class="col fs-4">
+                            <?php echo $value['name']?>
+                            <?php //echo $value['name']. ",id: ".$value['id']?>
                         </div>
+                        <div class="col fs-4">
+                            <?php echo $value['material'] ?>
+                        </div>
+                        <div class="col fs-4">
+                            <?php echo $value['submission_date'] ?>
+                        </div>
+                        <div class="col fs-4">
+                          <a type="button" href="singleComponent/singleComponentCheck.php?projectName=<?php echo $_COOKIE['projectName'];?>&componentID=<?php echo $value['id'];?>&componentName=<?php echo $value['name']; ?>&action=check" class="btn btn-secondary" name="button">查看</a>
+
+                          <a type="button" href="singleComponent/singleComponentModify.php?projectName=<?php echo $_COOKIE['projectName'];?>&componentID=<?php echo $value['id'];?>&componentName=<?php echo $value['name']; ?>&action=modify" class="btn btn-secondary" name="button">修改</a>
+
+                          <a type="button" href="singleComponent/singleComponentDelete.php?projectName=<?php echo $_COOKIE['projectName'];?>&componentID=<?php echo $value['id'];?>&componentName=<?php echo $value['name']; ?>&action=delete" class="btn btn-secondary" name="button">刪除</a>
+
+                          <a type="button" id="copy_btn" onclick="copy_onclick('<?php echo $value['id'];?>','<?php echo $value['name'];?>')" class="btn btn-secondary" name="button">複製</a>
+                        </div>
+                      </div>
                     </div>
                     <?php
                   }

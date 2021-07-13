@@ -15,11 +15,11 @@
 ?>
 <!--body contents go here-->
 <?php
-var_dump($_GET);
+/*var_dump($_GET);
 echo "<br>";
 var_dump($_POST);
 echo "<br>";
-var_dump($_COOKIE);
+var_dump($_COOKIE);*/
 
 //不是從前首頁進入, 可能由url進入
 if (!isset($_COOKIE['projectName'])) {
@@ -59,21 +59,23 @@ else {
             $minorElement = new MinorElement();
             $items = $minorElement->queryShow($_COOKIE['projectName'], $selections);
 
-            echo '<pre>'; print_r($items); echo '</pre>';
+            //echo '<pre>'; print_r($items); echo '</pre>';
 
             ?>
             <div class="mb-4">
-                <h3><label for="component_name" class="form-label">組合件名稱</label></h3>
-                <input type="text" class="form-control mb-4" id="component_name" name = "component_name" autocomplete="off" placeholder='This input is required (必填)' required>
-                <h3><label for="layer" class="form-label">layer</label></h3>
-                <textarea type="text" class="form-control mb-4" id="layer" name = "layer"></textarea>
-                <h3><label for="amount" class="form-label">數量</label></h3>
+                <h3><label for="component_name" class="form-label mt-4">組合件名稱</label></h3>
+                <input type="text" class="form-control" id="component_name" required name = "component_name" autocomplete="off" placeholder="This input is required (必填)" >
+
+                <h3><label for="layer" class="form-label mt-4">layer</label></h3>
+                <textarea type="text" class="form-control" id="layer" name = "layer"></textarea>
+
+                <h3><label for="amount" class="form-label mt-4">數量</label></h3>
                 <textarea type="text" class="form-control" id="amount" name = "amount"></textarea>
 
-                <h3><label for="supplier" class="form-label">承製供應商</label></h3>
-                <textarea type="text" class="form-control mb-4" id="supplier" name = "supplier"></textarea>
-                <h3><label for="target" class="form-label">組裝標的物</label></h3>
-                <textarea type="text" class="form-control mb-4" id="target" name = "target"></textarea>
+                <h3><label for="supplier" class="form-label mt-4">承製供應商</label></h3>
+                <textarea type="text" class="form-control" id="supplier" name = "supplier"></textarea>
+                <h3><label for="target" class="form-label mt-4">組裝標的物</label></h3>
+                <textarea type="text" class="form-control" id="target" name = "target"></textarea>
             </div>
 
           <?php foreach ($items as $item => $detail): ?>

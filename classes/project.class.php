@@ -10,19 +10,19 @@ class Project extends Dbh
     }
     public function checkIfProExist($projectName){
         $sql = "SELECT * from `cases` WHERE name= :name;";
-        echo $sql.'<hr>';
+        //echo $sql.'<hr>';
         $sth = $this->connect('ces_central')->prepare($sql);
         if (!$sth) {
             echo "\nPDO::errorInfo():\n";
             print_r($this->connect('ces_central')->errorInfo());
         }
-        echo "exec: ". $sth->execute(array(':name' => $projectName));
+        //echo "exec: ". $sth->execute(array(':name' => $projectName));
 
-        print_r($sth->fetchAll());
+        //print_r($sth->fetchAll());
 
         if ($sth->execute(array(':name' => $projectName))) {
             if($sth->fetchAll()){
-                echo $projectName." fetch!!<hr>";
+                //echo $projectName." fetch!!<hr>";
                 return true;
             }else {
                 echo $projectName." not fetch!!<hr>";

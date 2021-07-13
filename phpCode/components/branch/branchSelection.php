@@ -14,11 +14,11 @@
 ?>
 
 <?php
-var_dump($_GET);
+/*var_dump($_GET);
 echo "<br>";
 var_dump($_POST);
 echo "<br>";
-var_dump($_COOKIE);
+var_dump($_COOKIE);*/
 
 //不是從前首頁進入, 可能由url進入
 if (!isset($_COOKIE['projectName'])) {
@@ -31,17 +31,17 @@ else {
         header("Location: ../../index.php");
     }
 }
-var_dump($_GET);
+/*var_dump($_GET);
 echo "<br>";
 var_dump($_POST);
 echo "<br>";
-var_dump($_COOKIE);
+var_dump($_COOKIE);*/
 
 $user = new Users($_SERVER['PHP_AUTH_USER']);
 $UserName = $user->getUserName();
-echo "UserName: ".$UserName."<br>";
+//echo "UserName: ".$UserName."<br>";
 $department = $user->getUsersDepartment();
-echo "depar: ".$department."<br>";
+//echo "depar: ".$department."<br>";
 ?>
 
   <div class="container">
