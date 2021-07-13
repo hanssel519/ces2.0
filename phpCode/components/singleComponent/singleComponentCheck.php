@@ -44,7 +44,7 @@ if (!isset($_COOKIE['projectName'])) {
 <?php
 $component = new Components();
 $component_detail = $component->checkComponent($_GET['projectName'], $_GET['componentID']);
-
+var_dump($component_detail);
 ?>
 
 <div class="container">
@@ -60,16 +60,16 @@ $component_detail = $component->checkComponent($_GET['projectName'], $_GET['comp
           </div>
       </div>
 
-        <div class="container">
+        <!--<div class="container">
             <div class="row">
                 <div class="col-sm">
-                  <h3 class="py-2 border-bottom text-front"><?php echo "material: ".$_COOKIE['material'];  ?> </h3>
+                  <h3 class="py-2 border-bottom text-front"><?php //echo "material: ".$_COOKIE['material'];  ?> </h3>
                 </div>
                 <div class="col-sm">
-                  <h3 class="py-2 border-bottom text-end"><?php echo "component name: ".$_GET['componentName'];  ?> </h3>
+                  <h3 class="py-2 border-bottom text-end"><?php //echo "component name: ".$_GET['componentName'];  ?> </h3>
                 </div>
             </div>
-        </div>
+        </div>-->
 
     <div class="container py-3" id="hanging-icons">
 

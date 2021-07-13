@@ -36,6 +36,13 @@
           icon: 'error'
         });
     }
+    function nameFormat() {
+        swal({
+          title: '名稱不能包含單雙引號或分號',
+          button: true,
+          icon: 'error'
+        });
+    }
     </script>
 
 <?php
@@ -63,6 +70,8 @@ if (isset($_COOKIE['projectName'])) {
             echo "<script>multiEdition();</script>";
         }elseif(!strcmp($_GET['error'], 'deleted')){
           echo "<script>deleted();</script>";
+        }elseif(!strcmp($_GET['error'], 'componentNameFormat')){
+          echo "<script>nameFormat();</script>";
         }
     }
 }else {
@@ -97,7 +106,7 @@ if (isset($_GET['flag'])) {
             <div class="modal-body">
               <p id="id_name"></p>
                 <div class="mb-3">
-                  <label for="inputName" class="form-label">enter new component name below</label>
+                  <label for="inputName" class="form-label">NEW COMPONENT NAME</label>
                   <input type="text" class="form-control" name="componentName" id="inputName" autocomplete="off" required placeholder="enter component name">
                 </div>
             </div>

@@ -15,6 +15,18 @@ $_GET(
     [project_name] => 4dff(欲複製的project name)
 )
 */
+$projectName = trim($_POST['projectName']);
+//check if db already exist
+//$projectName = htmlentities($projectName, ENT_QUOTES, 'UTF-8');
+echo "<hr>分號: ". strpos($projectName,';');
+echo "<hr>單引: ". strpos($projectName,'\'');
+echo "<hr>雙引: ". strpos($projectName,'\"');
+if((strpos($projectName,';')!==false)||(strpos($projectName,'\'')!==false)||(strpos($projectName,'\"')!==false)){
+    //sweetalert -- swal加在這邊會快速消失
+    //所以送一個error flag回index.php
+    echo "<script>window.location.href = '../../index.php?err=projectNameFormat'</script>";
+    exit();
+}
 
 $obj = new Project();
 $res = $obj->checkIfProExist($_POST['projectName']);

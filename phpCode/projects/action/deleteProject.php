@@ -9,4 +9,4 @@ echo '<pre>'; print_r($_GET); echo '</pre>';
 $obj = new Project();
 $res = $obj->deleteProject($_GET['id'], $_GET['name']);
 
-header("Location:../../index.php");
+//header("Location:../../index.php");

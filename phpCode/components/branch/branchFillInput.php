@@ -67,11 +67,13 @@ else {
                 <input type="text" class="form-control mb-4" id="component_name" name = "component_name" autocomplete="off" placeholder='This input is required (必填)' required>
                 <h3><label for="layer" class="form-label">layer</label></h3>
                 <textarea type="text" class="form-control mb-4" id="layer" name = "layer"></textarea>
-
-                <h3><label for="supplier" class="form-label">供應商</label></h3>
-                <textarea type="text" class="form-control mb-4" id="supplier" name = "supplier"></textarea>
                 <h3><label for="amount" class="form-label">數量</label></h3>
                 <textarea type="text" class="form-control" id="amount" name = "amount"></textarea>
+
+                <h3><label for="supplier" class="form-label">承製供應商</label></h3>
+                <textarea type="text" class="form-control mb-4" id="supplier" name = "supplier"></textarea>
+                <h3><label for="target" class="form-label">組裝標的物</label></h3>
+                <textarea type="text" class="form-control mb-4" id="target" name = "target"></textarea>
             </div>
 
           <?php foreach ($items as $item => $detail): ?>

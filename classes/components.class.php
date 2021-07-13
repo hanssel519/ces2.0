@@ -201,14 +201,21 @@ class Components extends Dbh
         }else {
             //`id`, `name`, `material`, `material_id`, `layer`, `remark`, `submission_date`
             $total_item = array();
+            $sql = "SELECT name, material, material_id FROM `components` WHERE id = $componentID";
+            $material = $this->connect($projectName)->query($sql)->fetch();
+
+            //$total_item['info'] = $details;
+            $total_item['info'] = array('name' => $material['name'], 'material' => $material['material']);
+
             $sql = "SELECT layer, supplier, amount, remark FROM `components` WHERE id = ".$componentID.";";
             $details = $this->connect($projectName)->query($sql)->fetch();
+            //array_push($total_item['info'],$details);
+            $total_item['info'] = array_merge($total_item['info'],$details);
 
-            $total_item['info'] = $details;
+            //$total_item['info'] = $details;
             //檢查一下data passing gkosdjkdnv
             //用$componentID抓 component的材料跟材料id====================
-            $sql = "SELECT material, material_id FROM `components` WHERE id = $componentID";
-            $material = $this->connect($projectName)->query($sql)->fetch();
+
 
             //big_item=材料的columns, ex: 塑膠, 鋁, 鋁擠, 髮絲, 衝壓...
             $small_items = implode(", ", $this->big_item[$material['material']]);

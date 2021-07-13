@@ -31,6 +31,7 @@ function projectNameErrFormat() {
       button: true,
       icon: 'error'
     });
+    window.history.replaceState( {} , '', 'index.php' );
 }
 function projectNameErrExists() {
     swal({
@@ -39,12 +40,59 @@ function projectNameErrExists() {
       button: true,
       icon: 'error'
     });
+    window.history.replaceState( {} , '', 'index.php' );
 }
 function projectCreate() {
     swal({
       title: '專案新增成功!',
       button: true,
       icon: 'success'
+    });
+    window.history.replaceState( {} , '', 'index.php' );
+}
+function call_delete(project_id, project_name){
+  $.ajax({
+     method: 'GET',
+     url: 'projects/action/deleteProject.php',
+     data: {
+         id:project_id, name: project_name
+     },
+     success: function (response) {
+       location.reload();
+       swal('delete 成功!!!!', 'success');
+     },
+     error: function(err) {
+         console.log(err);
+         swal('delete 不成功!!!!', 'error');
+    }
+ });
+}
+function delete_onclick(project_id, project_name) {
+  swal("you sure you want to delete the project: "+project_name+" ?", {
+    buttons: {
+      cancel: "cancel deletion!",
+      catch: {
+        text: "delete",
+        value: "catch",
+      },
+      defeat: true,
+    },
+    })
+    .then((value) => {
+    switch (value) {
+
+      case "defeat":
+        swal("do nothing!");
+        break;
+
+      case "catch":
+        call_delete(project_id, project_name);
+        break;
+
+      default:
+        swal("don't delete!");
+
+    }
     });
 }
 </script>
@@ -78,7 +126,7 @@ if (isset($_GET['err'])) {
               <p id="id_name"></p>
                 <div class="mb-3">
                   <label for="inputName" class="form-label">project name</label>
-                  <input type="text" class="form-control" name="projectName" id="inputName" placeholder="Enter your project name">
+                  <input type="text" class="form-control" name="projectName" id="inputName" placeholder="Enter your project name" required>
                 </div>
             </div>
             <div class="modal-footer">
@@ -103,7 +151,7 @@ if (isset($_GET['err'])) {
         <div class="modal-body">
             <div class="mb-3">
               <label for="inputName" class="form-label">project name</label>
-              <input type="text" class="form-control" name="projectName" id="inputName" placeholder="enter new project name">
+              <input type="text" class="form-control" name="projectName" id="inputName" placeholder="enter new project name" required>
             </div>
         </div>
         <div class="modal-footer">
@@ -168,8 +216,10 @@ if (isset($_GET['err'])) {
                     </div>
                     <div class="col fs-4">
                         <a type="button" href=<?php echo $url; ?> class="btn btn-secondary" name="button">查看</a>
+<!--href="projects/action/deleteProject.php?id=<?php //echo $value['id'];?>&name=<?php //echo $value['name'];?>"-->
+                        <a type="button"
 
-                        <a type="button" href="projects/action/deleteProject.php?id=<?php echo $value['id'];?>&name=<?php echo $value['name'];?>" class="btn btn-secondary" name="button">刪除</a>
+                          id="delete_btn" onclick="delete_onclick('<?php echo $value['id'];?>','<?php echo $value['name'];?>')" class="btn btn-secondary" name="button">刪除</a>
 
                         <a type="button" id="copy_btn" onclick="copy_onclick('<?php echo $value['id'];?>','<?php echo $value['name'];?>')" class="btn btn-secondary" name="button">複製</a>
                     </div>
@@ -234,6 +284,7 @@ if (isset($_GET['err'])) {
             $('#copy_form').attr('action', formAction + url);
             $('#copyProject').modal('show');
         }
+
         document.getElementById("sweetalert").onclick = function () {
             swal({
               title: 'Auto close alert!',
